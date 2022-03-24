@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "UXJght6VFmUto8FABfm81iO3/pwhdTZ1mDp3a0NHGcq5p1mXiDqI4/EjXOvRvsxvnEsYRKk6TwCaU2fYZlJP1A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\mm\\Desktop\\WorkingDirectory\\Apprentissage\\EPSIC-3\\projet_examen_vente_dhabits\\ReWear_backend\\ReWear_backend\\ReWear_backend.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\mm\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\mm\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\mm\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\mm\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\mm\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\mm\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
