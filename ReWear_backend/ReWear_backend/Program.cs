@@ -1,5 +1,13 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
+using ReWear_backend.Data;
 using ReWear_backend.Models;
+using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +22,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("JwtConfig"));
 //inject IdentityUser and IdentityRole to DbContext
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { })
-        .AddEntityFrameworkStores<CovidDbContext>();
+        .AddEntityFrameworkStores<ReWearDataContext>();
+builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=EpsicRpg.db;"));
 
 var app = builder.Build();
 
