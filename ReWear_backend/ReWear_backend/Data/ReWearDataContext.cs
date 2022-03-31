@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ReWear_backend.Models;
 
 namespace ReWear_backend.Data
 {
-    public class ReWearDataContext:DbContext
+    public class ReWearDataContext : IdentityDbContext
     {
 
         public DbSet<Dress> Dresses { get; set; }

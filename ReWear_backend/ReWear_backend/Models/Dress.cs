@@ -2,18 +2,30 @@
 {
     public class Dress
     {
-        public Dress(int id, string name, int price, string description, List<Category> categories, HealthState healthState, Size size)
+        private Dress() { }//Empty contructor for EF to make migrations, private so like this noone else instead of EF can access to it
+        public Dress(Guid id, string name, int price, string description, HealthState healthState, Size size)
         {
             Id = id;
             Name = name;
             Price = price;
             Description = description;
-            Categories = categories;
+            Categories = new List<Category>();
             HealthState = healthState;
             Size = size;
         }
+        public Dress(Guid id, string name, int price, string description, HealthState healthState, Size size, List<Category> categories)
+        {
 
-        public int Id { get; set; }
+            Id = id;
+            Name = name;
+            Price = price;
+            Description = description;
+            HealthState = healthState;
+            Size = size;
+            Categories = categories;
+        }
+
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
         public string Description { get; set; }

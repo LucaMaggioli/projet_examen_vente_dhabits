@@ -2,16 +2,23 @@
 {
     public class Category
     {
-        public Category(int id, string name, List<SizeType> sizeTypesForCategory)
+        private Category() { }//Empty contructor for EF to make migrations, private so like this noone else instead of EF can access to it
+        public Category(Guid id, string name)
+        {
+            Id = id;
+            Name = name;
+            SizeTypesForCategory = new List<SizeType>();
+        }
+
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public List<SizeType> SizeTypesForCategory { get; set; }
+
+        public Category(Guid id, string name, List<SizeType> sizeTypesForCategory)
         {
             Id = id;
             Name = name;
             SizeTypesForCategory = sizeTypesForCategory;
         }
-
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public List<SizeType> SizeTypesForCategory { get; set; }
-
     }
 }

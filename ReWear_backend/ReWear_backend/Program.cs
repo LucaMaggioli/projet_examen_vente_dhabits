@@ -19,7 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 //add Context that use Sqlite
-builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=EpsicRpg.db;"));
+builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=ReWearTest.db;"));
 
 //builder.Configuration.GetSection("JwtConfig") allow us to use the "JwtConfig" into "appsettings.json";
 builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("JwtConfig"));
