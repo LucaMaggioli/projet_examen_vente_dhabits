@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using ReWear_backend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,9 @@ builder.Services.AddSwaggerGen();
 
 //builder.Configuration.GetSection("JwtConfig") allow us to use the "JwtConfig" into "appsettings.json";
 builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("JwtConfig"));
+//inject IdentityUser and IdentityRole to DbContext
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { })
+        .AddEntityFrameworkStores<CovidDbContext>();
 
 var app = builder.Build();
 
