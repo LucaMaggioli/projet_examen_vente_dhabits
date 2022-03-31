@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 using ReWear_backend.Data;
 using ReWear_backend.Models;
+using ReWear_backend.Services;
 using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,9 @@ builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("Jw
 //inject IdentityUser and IdentityRole to DbContext
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { })
         .AddEntityFrameworkStores<ReWearDataContext>();
+
+builder.Services.AddTransient<TokenManagerService>();
+    //services.AddTransient<IArticleDataProvider, ArticleDataProvider>();
 
 var app = builder.Build();
 
