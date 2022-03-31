@@ -1,3 +1,5 @@
+using ReWear_backend.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +8,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//builder.Configuration.GetSection("JwtConfig") allow us to use the "JwtConfig" into "appsettings.json";
+builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("JwtConfig"));
 
 var app = builder.Build();
 
