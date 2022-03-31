@@ -18,12 +18,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//add Context that use Sqlite
+builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=EpsicRpg.db;"));
+
 //builder.Configuration.GetSection("JwtConfig") allow us to use the "JwtConfig" into "appsettings.json";
 builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("JwtConfig"));
 //inject IdentityUser and IdentityRole to DbContext
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { })
         .AddEntityFrameworkStores<ReWearDataContext>();
-builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=EpsicRpg.db;"));
 
 var app = builder.Build();
 
