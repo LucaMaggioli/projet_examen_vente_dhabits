@@ -24,9 +24,12 @@ builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"
 
 //builder.Configuration.GetSection("JwtConfig") allow us to use the "JwtConfig" into "appsettings.json";
 builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("JwtConfig"));
+
 //inject IdentityUser and IdentityRole to DbContext
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { })
-        .AddEntityFrameworkStores<ReWearDataContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+    options.User.RequireUniqueEmail = true;
+})
+    .AddEntityFrameworkStores<ReWearDataContext>();
 
 builder.Services.AddTransient<TokenManagerService>();
 //services.AddTransient<IArticleDataProvider, ArticleDataProvider>();
