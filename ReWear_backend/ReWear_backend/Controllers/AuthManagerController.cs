@@ -9,20 +9,30 @@ namespace ReWear_backend.Controllers
     public class AuthManagerController : ControllerBase
     {
         private readonly TokenManagerService _tokenManagerService;
+        private readonly RegexUtilities _regexUtilities;
         private readonly UserManager<IdentityUser> _userManager;
 
 
-        public AuthManagerController(TokenManagerService tokenManagerService, UserManager<IdentityUser> userManager)
+        public AuthManagerController(TokenManagerService tokenManagerService, UserManager<IdentityUser> userManager, RegexUtilities regexUtilities)
         {
             _tokenManagerService = tokenManagerService;
             _userManager = userManager;
+            _regexUtilities = regexUtilities;
         }
 
         [HttpPost]
         [Route("auth/Register")]
         public async Task<IActionResult> Register([FromBody] RegistrationRequestDto user)
         {
-            var newUser = new IdentityUser { Email = user.Email, UserName = user.Email };
+            if (!_regexUtilities.IsValidEmail(user.Email))
+            {
+                return BadRequest(new RegistrationResponse
+                {
+                    Result = false,
+                    Message = "Bad email"
+                }) ;
+            }
+            var newUser = new IdentityUser { Email = user.Email, UserName = user.Name };
             var isCreated = await _userManager.CreateAsync(newUser, user.Password);
             if (isCreated.Succeeded)
             {

@@ -33,3 +33,9 @@ Premium:
     - Payant: achat unique pour un nombre défini de produits
     - Magasin/Business: abonnement par mois, produits illimités
 - payement par twint
+
+Notes:
+	- login for ReWearTest.db:
+		- username: space_dog
+		- pswd: Sp4ceDOG.2019
+		- email: space@mail.ch

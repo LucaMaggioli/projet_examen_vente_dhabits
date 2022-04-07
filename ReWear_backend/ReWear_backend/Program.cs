@@ -29,7 +29,9 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { })
         .AddEntityFrameworkStores<ReWearDataContext>();
 
 builder.Services.AddTransient<TokenManagerService>();
-    //services.AddTransient<IArticleDataProvider, ArticleDataProvider>();
+//services.AddTransient<IArticleDataProvider, ArticleDataProvider>();
+builder.Services.AddTransient<RegexUtilities>();
+
 
 var app = builder.Build();
 
