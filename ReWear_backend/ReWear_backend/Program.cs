@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.OpenApi.Models;
 using ReWear_backend.Data;
 using ReWear_backend.Models;
+using ReWear_backend.Services;
 using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,16 +17,47 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "ReWear backend API documentation", Version = "v1.0.0" });
+    var securitySchema = new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
+    };
+    options.AddSecurityDefinition("Bearer", securitySchema);
+    var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    { securitySchema, new[] { "Bearer" } }
+                };
+
+    options.AddSecurityRequirement(securityRequirement);
+});
 
 //add Context that use Sqlite
 builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=ReWearTest.db;"));
 
 //builder.Configuration.GetSection("JwtConfig") allow us to use the "JwtConfig" into "appsettings.json";
 builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("JwtConfig"));
+
 //inject IdentityUser and IdentityRole to DbContext
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { })
-        .AddEntityFrameworkStores<ReWearDataContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+    options.User.RequireUniqueEmail = true;
+})
+    .AddEntityFrameworkStores<ReWearDataContext>();
+
+builder.Services.AddTransient<TokenManagerService>();
+//services.AddTransient<IArticleDataProvider, ArticleDataProvider>();
+builder.Services.AddTransient<RegexUtilities>();
+
 
 var app = builder.Build();
 
