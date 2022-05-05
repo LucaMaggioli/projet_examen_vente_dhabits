@@ -21,7 +21,7 @@ namespace ReWear_backend.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public List<UserDto> GetUsers()
         {
-            var usersNames = _userManager.Users.Select(u=> new UserDto { UserName = u.UserName } ).ToList();
+            var usersNames = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.IsPremium }).ToList();
             return usersNames;
         }
     }

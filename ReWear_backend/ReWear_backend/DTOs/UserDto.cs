@@ -3,6 +3,6 @@
     public class UserDto
     {
         public string UserName { get; set; }
-        //public Boolean IsPremium { get; set; }
+        public bool IsPremium { get; set; }
     }
 }
