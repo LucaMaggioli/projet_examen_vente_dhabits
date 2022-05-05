@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReWear_backend.DTOs;
+using ReWear_backend.Models;
 using ReWear_backend.Services;
 
 namespace ReWear_backend.Controllers
@@ -10,10 +11,10 @@ namespace ReWear_backend.Controllers
     {
         private readonly TokenManagerService _tokenManagerService;
         private readonly RegexUtilities _regexUtilities;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ReWearUser> _userManager;
 
 
-        public AuthManagerController(TokenManagerService tokenManagerService, UserManager<IdentityUser> userManager, RegexUtilities regexUtilities)
+        public AuthManagerController(TokenManagerService tokenManagerService, UserManager<ReWearUser> userManager, RegexUtilities regexUtilities)
         {
             _tokenManagerService = tokenManagerService;
             _userManager = userManager;
@@ -32,7 +33,7 @@ namespace ReWear_backend.Controllers
                     Message = "Bad email"
                 }) ;
             }
-            var newUser = new IdentityUser { Email = user.Email, UserName = user.Name };
+            var newUser = new ReWearUser { Email = user.Email, UserName = user.Name };
             var isCreated = await _userManager.CreateAsync(newUser, user.Password);
             if (isCreated.Succeeded)
             {

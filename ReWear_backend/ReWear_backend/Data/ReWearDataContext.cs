@@ -4,9 +4,8 @@ using ReWear_backend.Models;
 
 namespace ReWear_backend.Data
 {
-    public class ReWearDataContext : IdentityDbContext
+    public class ReWearDataContext : IdentityDbContext<ReWearUser>
     {
-
         public DbSet<Dress> Dresses { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<HealthState> HealthStates { get; set; }

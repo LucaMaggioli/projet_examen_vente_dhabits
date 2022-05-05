@@ -43,13 +43,14 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 //add Context that use Sqlite
-builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=ReWearTest.db;"));
+builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=ReWear.db;"));
 
 //builder.Configuration.GetSection("JwtConfig") allow us to use the "JwtConfig" into "appsettings.json";
 builder.Services.Configure<JwtConfigSecret>(builder.Configuration.GetSection("JwtConfig"));
 
 //inject IdentityUser and IdentityRole to DbContext
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { //Replace IdentityUser with your customUser 'ReWearUser'
+builder.Services.AddIdentity<ReWearUser, IdentityRole>(options => {
     options.User.RequireUniqueEmail = true;
 })
     .AddEntityFrameworkStores<ReWearDataContext>();
