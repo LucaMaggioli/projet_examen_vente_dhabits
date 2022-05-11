@@ -24,5 +24,17 @@ namespace ReWear_backend.Controllers
             var usersNames = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.IsPremium }).ToList();
             return usersNames;
         }
+
+        [HttpGet("{username}/dresses")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetDressesByUsername(string username)
+        {
+
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null) return NotFound();
+
+            return Ok(user.Dresses);
+        }
     }
 }
