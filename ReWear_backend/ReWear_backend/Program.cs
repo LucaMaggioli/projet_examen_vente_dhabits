@@ -82,8 +82,8 @@ builder.Services.AddTransient<TokenManagerService>();
 builder.Services.AddTransient<RegexUtilities>();
 
 //the following line allow to use the HttpContextAccessor in controller for example to acces the JWT access_token
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+//builder.Services.AddHttpContextAccessor();
+//builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
 
 

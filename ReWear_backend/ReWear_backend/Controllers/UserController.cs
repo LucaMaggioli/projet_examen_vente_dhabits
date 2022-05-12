@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using ReWear_backend.Data;
 using ReWear_backend.DTOs;
 using ReWear_backend.Models;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,11 +16,13 @@ namespace ReWear_backend.Controllers
     {
         private readonly UserManager<ReWearUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ReWearDataContext _reWearDataContext;
 
-        public UserController(UserManager<ReWearUser> userManager, IHttpContextAccessor httpContextAccessor)
+        public UserController(UserManager<ReWearUser> userManager, IHttpContextAccessor httpContextAccessor, ReWearDataContext reWearDataContext)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
+            _reWearDataContext = reWearDataContext;
         }
 
         [HttpGet("all")]
@@ -45,21 +49,35 @@ namespace ReWear_backend.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetLoggedUserDresses()
         {
-
-            var accessToken = await _httpContextAccessor.HttpContext.GetTokenAsync("access_token");
-            var username = _httpContextAccessor.HttpContext.User.Identity.Name;
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
-            //var usub = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "sub").Value; --> not ok
+            
             var Username = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Username").Value;
-            //var uSubububuUsername = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == JwtRegisteredClaimNames.Sub).Value; --> not ok
 
-            //var uemail = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "email").Value; --> noOk!!
-            //var smt = _httpContextAccessor.HttpContext.User.Claims.First(c => c.Type == "sub").Value;
-
-            //var userMail = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "sub").Value;
-
-            var user = _userManager.Users.FirstOrDefault(u => u.UserName == Username);
+            var user = _userManager.Users.Include(user => user.Dresses).FirstOrDefault(u => u.UserName == Username);
             if (user == null) return NotFound();
+
+            return Ok(user.Dresses);
+        }
+
+
+        [HttpPost("me/dress")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> AddDressToUser(string username, [FromBody] DressDto DressToAddDto)
+        {
+            var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
+
+            var user = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Id == userId);
+
+
+            if (user == null) return NotFound();
+
+            var newDress = new Dress(DressToAddDto);
+
+            _reWearDataContext.Dresses.Add(newDress);
+
+            user.Dresses.Add(newDress);
+
+            await _reWearDataContext.SaveChangesAsync();
 
             return Ok(user.Dresses);
         }
