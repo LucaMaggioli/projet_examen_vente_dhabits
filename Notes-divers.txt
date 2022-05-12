@@ -1,0 +1,61 @@
+CONSIGNE ////////////////////////////////////////
+Le site devra comporter une partie accessible à tout le monde,
+une partie accessible seulement aux membres payants et une partie accessible seulement aux administrateurs (gestion des prix, des abonnés, etc.)
+
+La gestion du paiement à proprement parler du service pourra être “fake” (pas besoin de s’interfacer avec un service de paiement)
+mais il faudra quand même développer la partie du site qui permet à un utilisateur de s’abonner et gérer son abonnement.
+////////////////////////////////////////
+
+UserModel:
+	-name
+	-mail
+	-PremiumModel: premium
+	
+PremiumModel:
+	-isPremium : bool -> {endPremiumDate > dateTime.Now}
+	-endPremiumDate: DateTime -> {.Now when created};
+	
+PremiumPack:
+	-Guid: Id
+	-string: name    -Ex.(monthlyPack - trimesterPack - yearPack)
+	-string: Price
+	-Time: validityTime -Ex.(30days - 90days - 360days)
+							////-DateTime: StartDate
+							////-bool: valid = (StartDate + validityTime) > Now
+
+
+Méthodes accessibles par tous:
+####
+GET premiumPacks/all
+	{
+		return DbContext.PremiumPack.ToList()
+	}
+####
+
+Méthodes accessibles que par les Users qui sont Admin:
+#####		
+//deleter et modifier des Users (email - username - premium/endValidity
+DELETE - PATCH [Authorize if isAdmin claim is in token] user/{id}
+	{
+		DbContext.Users.Delete(id);
+	}
+	
+//les users Admin doivent modifier, deleter, ajouter des premiumpacks;
+POST - DELETE - PATCH [Authorize if claim IsAdmin] premiumPacks/{}
+#####
+
+
+Méthodes pour gérer Abonnement User (accessibles que par le user qui est logué)
+#####
+GET [Authorize] user/me/buyPremiumPack/{premiumPackid}	//acheter un 'pack' abo
+	{
+		var validityToAdd = DbContext.getValidity(premiumPackId)
+		UserLogged.Premium.endPremiumDate += validityToAdd;
+	}
+	
+GET [Authorize] user/me/premium/endValidity  //fin de la validité de l'abo
+	{
+		return User.Premium.EndValidityDate;
+	}
+#####
+	

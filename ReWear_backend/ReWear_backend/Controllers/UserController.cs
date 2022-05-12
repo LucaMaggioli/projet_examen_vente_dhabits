@@ -84,5 +84,19 @@ namespace ReWear_backend.Controllers
 
             return Ok(user.Dresses);
         }
+
+        [HttpPost("shouldBeIn/premiumPack/controller")]//this route should be in PremiumPack controller
+        public async Task<IActionResult> AddPremiumPack() //[FromBody] PremiumPackDto PremiumPackToAddDto
+        {
+            //_reWearDataContext.PremiumPack.Add()
+            return Ok();
+        }
+
+        [HttpGet("me/buyPremiumPack/{premiumPackId}")]
+        public async Task<IActionResult> BuyPremiumPack(string premiumPackId)
+        {
+            //DbContext.getPremiumPack(premiumpackId);
+            return Ok();
+        }
     }
 }
