@@ -1,34 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mm\\Desktop\\WorkingDirectory\\Apprentissage\\EPSIC-3\\projet_examen_vente_dhabits\\ReWear_backend\\ReWear_backend\\ReWear_backend.csproj": {}
+    "/Users/kilian_aiello/Documents/00_Apprentissage/3ème année/ExamenVenteHabits/ReWear_backend/ReWear_backend/ReWear_backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mm\\Desktop\\WorkingDirectory\\Apprentissage\\EPSIC-3\\projet_examen_vente_dhabits\\ReWear_backend\\ReWear_backend\\ReWear_backend.csproj": {
+    "/Users/kilian_aiello/Documents/00_Apprentissage/3ème année/ExamenVenteHabits/ReWear_backend/ReWear_backend/ReWear_backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mm\\Desktop\\WorkingDirectory\\Apprentissage\\EPSIC-3\\projet_examen_vente_dhabits\\ReWear_backend\\ReWear_backend\\ReWear_backend.csproj",
+        "projectUniqueName": "/Users/kilian_aiello/Documents/00_Apprentissage/3ème année/ExamenVenteHabits/ReWear_backend/ReWear_backend/ReWear_backend.csproj",
         "projectName": "ReWear_backend",
-        "projectPath": "C:\\Users\\mm\\Desktop\\WorkingDirectory\\Apprentissage\\EPSIC-3\\projet_examen_vente_dhabits\\ReWear_backend\\ReWear_backend\\ReWear_backend.csproj",
-        "packagesPath": "C:\\Users\\mm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mm\\Desktop\\WorkingDirectory\\Apprentissage\\EPSIC-3\\projet_examen_vente_dhabits\\ReWear_backend\\ReWear_backend\\obj\\",
+        "projectPath": "/Users/kilian_aiello/Documents/00_Apprentissage/3ème année/ExamenVenteHabits/ReWear_backend/ReWear_backend/ReWear_backend.csproj",
+        "packagesPath": "/Users/kilian_aiello/.nuget/packages/",
+        "outputPath": "/Users/kilian_aiello/Documents/00_Apprentissage/3ème année/ExamenVenteHabits/ReWear_backend/ReWear_backend/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\mm\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "/Users/kilian_aiello/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -88,7 +79,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.201\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.101/RuntimeIdentifierGraph.json"
         }
       }
     }
