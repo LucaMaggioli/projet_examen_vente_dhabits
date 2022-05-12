@@ -6,6 +6,7 @@ namespace ReWear_backend.Models
     {
         public List<Dress>? Dresses { get; set; }
         public bool IsPremium { get; set; }
-        public Premium Premium { get; set; }
+        public DateTime EndPremiumDate { get; set; }
+        //public Premium Premium { get; set; }
     }
 }

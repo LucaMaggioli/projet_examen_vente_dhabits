@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReWear_backend.Data;
 
@@ -10,9 +11,10 @@ using ReWear_backend.Data;
 namespace ReWear_backend.Migrations
 {
     [DbContext(typeof(ReWearDataContext))]
-    partial class ReWearDataContextModelSnapshot : ModelSnapshot
+    [Migration("20220512210359_Add_PremiumPack_Model-EndPremiumDate_In_User")]
+    partial class Add_PremiumPack_ModelEndPremiumDate_In_User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
