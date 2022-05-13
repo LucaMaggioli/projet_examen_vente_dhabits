@@ -1,3 +1,3 @@
 -- SQLite
 DELETE FROM AspNetUsers
-WHERE Email = "string";
+WHERE Email = "space@mail.ch";

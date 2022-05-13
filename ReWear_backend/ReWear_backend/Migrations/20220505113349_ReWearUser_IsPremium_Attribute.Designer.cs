@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReWear_backend.Data;
 
@@ -10,9 +11,10 @@ using ReWear_backend.Data;
 namespace ReWear_backend.Migrations
 {
     [DbContext(typeof(ReWearDataContext))]
-    partial class ReWearDataContextModelSnapshot : ModelSnapshot
+    [Migration("20220505113349_ReWearUser_IsPremium_Attribute")]
+    partial class ReWearUser_IsPremium_Attribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
@@ -175,7 +177,7 @@ namespace ReWear_backend.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("HealthStateId")
+                    b.Property<Guid>("HealthStateId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
@@ -188,7 +190,7 @@ namespace ReWear_backend.Migrations
                     b.Property<string>("ReWearUserId")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid?>("SizeId")
+                    b.Property<Guid>("SizeId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -386,7 +388,9 @@ namespace ReWear_backend.Migrations
                 {
                     b.HasOne("ReWear_backend.Models.HealthState", "HealthState")
                         .WithMany()
-                        .HasForeignKey("HealthStateId");
+                        .HasForeignKey("HealthStateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ReWear_backend.Models.ReWearUser", null)
                         .WithMany("Dresses")
@@ -394,7 +398,9 @@ namespace ReWear_backend.Migrations
 
                     b.HasOne("ReWear_backend.Models.Size", "Size")
                         .WithMany()
-                        .HasForeignKey("SizeId");
+                        .HasForeignKey("SizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("HealthState");
 
