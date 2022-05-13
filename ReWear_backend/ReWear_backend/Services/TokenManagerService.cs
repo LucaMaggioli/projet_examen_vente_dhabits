@@ -10,14 +10,14 @@ namespace ReWear_backend.Services
 {
     public class TokenManagerService
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ReWearUser> _userManager;
         private readonly JwtConfigSecret _jwtConfig;
-        public TokenManagerService(UserManager<IdentityUser> userManager, IOptionsMonitor<JwtConfigSecret> JwtConfigSecretOptionsMonitor)
+        public TokenManagerService(UserManager<ReWearUser> userManager, IOptionsMonitor<JwtConfigSecret> JwtConfigSecretOptionsMonitor)
         {
             _userManager = userManager;
             _jwtConfig = JwtConfigSecretOptionsMonitor.CurrentValue;
         }
-        public async Task<string> GenerateJwtTokenFromIdentityUser(IdentityUser user)
+        public async Task<string> GenerateJwtTokenFromIdentityUser(ReWearUser user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
@@ -33,6 +33,7 @@ namespace ReWear_backend.Services
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim("Id", user.Id),
+                    new Claim("Username", user.UserName),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 }),

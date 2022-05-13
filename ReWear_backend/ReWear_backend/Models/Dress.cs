@@ -1,4 +1,6 @@
-﻿namespace ReWear_backend.Models
+﻿using ReWear_backend.DTOs;
+
+namespace ReWear_backend.Models
 {
     public class Dress
     {
@@ -14,12 +16,23 @@
             Size = size;
             Categories = categories;
         }
+
+        public Dress(DressDto dressDto)
+        {
+            Id = new Guid();
+            Name = dressDto.Name;
+            Price = dressDto.Price;
+            Description = dressDto.Description;
+            HealthState = dressDto.HealthState;
+            Size = dressDto.Size;
+            Categories = dressDto.Categories;
+        }
         public Guid Id { get; set; }
         public string Name { get; set; }
         public int Price { get; set; }
         public string Description { get; set; }
-        public List<Category> Categories { get; set; }
-        public HealthState HealthState { get; set; }
-        public Size Size { get; set; }
+        public List<Category>? Categories { get; set; }
+        public HealthState? HealthState { get; set; }
+        public Size? Size { get; set; }
     }
 }
