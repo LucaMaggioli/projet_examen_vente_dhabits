@@ -1,9 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {Button, createTheme, ThemeOptions, ThemeProvider} from "@mui/material";
-import {Accueil} from "./Components/PageAccueil/Accueil";
+
+import {createTheme, ThemeProvider} from "@mui/material";
 import React from "react";
+import {Nav} from "./Components/Nav/Nav";
 
 const theme = createTheme({
     palette: {
@@ -31,9 +32,7 @@ const theme = createTheme({
 export default function App() {
   return (
       <ThemeProvider theme={theme}>
-          <div className={'container'}>
-              <Accueil />
-          </div>  
+          <Nav></Nav>
       </ThemeProvider>
   );
 }

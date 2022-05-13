@@ -1,4 +1,4 @@
-#nav {
+#nav_gauche {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -12,7 +12,6 @@
     background-color: #00A878;
 
 }
-
 
 #title {
     display: flex;
@@ -50,18 +49,17 @@
     width: 30px;
 }
 
-#register, #login {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90px;
-    padding-left: 15px;
-    padding-right: 15px;
-}
 
 #nav_droite{
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     float: right;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
