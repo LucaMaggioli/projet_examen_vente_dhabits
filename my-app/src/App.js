@@ -1,10 +1,8 @@
 import './App.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 import {createTheme, ThemeProvider} from "@mui/material";
 import React from "react";
-import {Nav} from "./Components/Nav/Nav";
+import {Accueil} from "./Components/PageAccueil/Accueil";
 
 const theme = createTheme({
     palette: {
@@ -32,7 +30,7 @@ const theme = createTheme({
 export default function App() {
   return (
       <ThemeProvider theme={theme}>
-          <Nav></Nav>
+          <Accueil></Accueil>
       </ThemeProvider>
   );
 }

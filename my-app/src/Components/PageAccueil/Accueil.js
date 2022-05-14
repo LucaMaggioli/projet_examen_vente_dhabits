@@ -1,13 +1,12 @@
 import React, {Component} from "react";
+import {Nav} from "../Nav/Nav";
 
 export class Accueil extends Component {
     render() {
         return (
-            <div>
-                <body>
-
-                </body>
-            </div>
+            <body>
+                <Nav></Nav>
+            </body>
         );
     }
 }
