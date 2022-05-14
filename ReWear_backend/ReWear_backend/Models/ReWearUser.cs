@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace ReWear_backend.Models
 {
@@ -6,8 +7,13 @@ namespace ReWear_backend.Models
     {
         public List<Dress>? Dresses { get; set; }
         public bool IsAdmin { get; set; }
-        public bool IsPremium { get; set; }
+        //public bool IsPremium { get; set; }
         public DateTime EndPremiumDate { get; set; }
-        //public Premium Premium { get; set; }
+        public List<BoughtPack> BoughtPacks { get; set; }
+
+        public bool? IsPremium()
+        {
+            return this.EndPremiumDate >= DateTime.Now;
+        }
     }
 }

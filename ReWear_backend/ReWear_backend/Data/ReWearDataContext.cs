@@ -12,6 +12,7 @@ namespace ReWear_backend.Data
         public DbSet<Size> Sizes { get; set; }
         public DbSet<SizeType> SizeTypes { get; set; }
         public DbSet<PremiumPack> PremiumPacks { get; set; }
+        public DbSet<BoughtPack> BoughtPacks { get; set; }
 
         //constructor take in parameter a instance of "options of type ReWearContext" and pass it to the parent with :base 
         public ReWearDataContext(DbContextOptions<ReWearDataContext> dataContextOptions) : base(dataContextOptions)

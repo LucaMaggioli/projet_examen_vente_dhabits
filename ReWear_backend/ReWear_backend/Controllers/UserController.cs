@@ -29,7 +29,7 @@ namespace ReWear_backend.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public List<UserDto> GetUsers()
         {
-            var usersNames = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.IsPremium }).ToList();
+            var usersNames = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.EndPremiumDate > DateTime.Now}).ToList();
             return usersNames;
         }
 
@@ -69,7 +69,7 @@ namespace ReWear_backend.Controllers
             var user = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null) return NotFound();
-            if (!user.IsPremium && user.Dresses.Count() >= 5)
+            if (user.EndPremiumDate <= DateTime.Now && user.Dresses.Count() >= 5)
             {
                 return Unauthorized("Upgrade to Premium to have more than 5 dresses");
             }
@@ -83,20 +83,6 @@ namespace ReWear_backend.Controllers
             await _reWearDataContext.SaveChangesAsync();
 
             return Ok(user.Dresses);
-        }
-
-        [HttpPost("shouldBeIn/premiumPack/controller")]//this route should be in PremiumPack controller
-        public async Task<IActionResult> AddPremiumPack() //[FromBody] PremiumPackDto PremiumPackToAddDto
-        {
-            //_reWearDataContext.PremiumPack.Add()
-            return Ok();
-        }
-
-        [HttpGet("me/buyPremiumPack/{premiumPackId}")]
-        public async Task<IActionResult> BuyPremiumPack(string premiumPackId)
-        {
-            //DbContext.getPremiumPack(premiumpackId);
-            return Ok();
         }
     }
 }

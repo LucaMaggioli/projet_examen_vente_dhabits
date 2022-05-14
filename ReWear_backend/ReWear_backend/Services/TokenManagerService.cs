@@ -44,6 +44,7 @@ namespace ReWear_backend.Services
             };
             //another way to add claims to token
             tokenDescriptor.Subject.AddClaim(new Claim("school", "epsic"));
+            tokenDescriptor.Subject.AddClaim(new Claim("IsPremium", user.IsPremium().ToString()));
 
             var userRoles = await _userManager.GetRolesAsync(user);
             userRoles.ToList().ForEach(role => {
