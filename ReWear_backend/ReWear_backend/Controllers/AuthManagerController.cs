@@ -33,7 +33,7 @@ namespace ReWear_backend.Controllers
                     Message = "Bad email"
                 }) ;
             }
-            var newUser = new ReWearUser { Email = user.Email, UserName = user.Name, Dresses = new List<Dress>() };
+            var newUser = new ReWearUser { Email = user.Email, UserName = user.Name, IsAdmin = false, Dresses = new List<Dress>(), EndPremiumDate = DateTime.Now, BoughtPacks = new List<BoughtPack>() };
             var isCreated = await _userManager.CreateAsync(newUser, user.Password);
             if (isCreated.Succeeded)
             {

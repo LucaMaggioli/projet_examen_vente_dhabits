@@ -25,21 +25,25 @@ namespace ReWear_backend.Controllers
             _tokenManagerService = tokenManagerService;
         }
 
-        [HttpGet("all")]//this route should be in PremiumPack controller
-        public async Task<IActionResult> GetAllPremiumPacks() //[FromBody] PremiumPackDto PremiumPackToAddDto
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAllPremiumPacks()
         {
-            //_reWearDataContext.PremiumPack.Add()
-            return Ok();
+            var allPremiumPacks = _reWearDataContext.PremiumPacks.ToList();
+            return Ok(allPremiumPacks);
         }
 
-        [HttpPost("add")]//this route should be in PremiumPack controller
-        public async Task<IActionResult> AddPremiumPack() //[FromBody] PremiumPackDto PremiumPackToAddDto
+        //[Authorized only by admin user]
+        [HttpPost("add")]
+        public async Task<IActionResult> AddPremiumPack([FromBody]PremiumPackDto premiumPackToAdd)
         {
             //_reWearDataContext.PremiumPack.Add()
-            return Ok();
+            var addedPP = _reWearDataContext.PremiumPacks.Add(new PremiumPack(premiumPackToAdd));
+            await _reWearDataContext.SaveChangesAsync();
+            return Ok(addedPP.Entity);
         }
 
-        [HttpPatch("update")]//this route should be in PremiumPack controller
+        [HttpPatch("update")]
+        //[Authorized only by admin user]
         public async Task<IActionResult> UpdatePremiumPack() //[FromBody] PremiumPackDto PremiumPackToAddDto
         {
             //_reWearDataContext.PremiumPack.Add()
