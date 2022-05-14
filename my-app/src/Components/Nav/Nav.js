@@ -22,12 +22,10 @@ export class Nav extends Component {
 
                 <div id={'nav_droite'}>
                     <div id={'register'}>
-                        {/*<Button variant="contained" color={"secondary"}>S'inscrire</Button>*/}
-                        {/*<Button variant={'contained'} color={'secondary'}>S'inscrire</Button>*/}
-                        <Button variant={'contained'} color={'secondary'}>S'inscrire</Button>
+                        <Button variant={'contained'} color={'secondary'} onClick={()=>{history.push('/signin')}}>S'inscrire</Button>
                     </div>
+
                     <div id={'login'}>
-                        {/*<Button variant="text" color={"background"}>Connexion</Button>*/}
                         <Button variant={'text'} color={'background'}>Connexion</Button>
                     </div>
                 </div>
