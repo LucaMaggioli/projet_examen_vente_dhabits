@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 
 export default function Login(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("space@mail.ch");
+  const [password, setPassword] = useState("Sp4ceDOG.2019");
+  const [token, setToken] = useState("");
 
   return (
     <>
@@ -12,6 +13,7 @@ export default function Login(props) {
       <label>Password</label>
       <input id="password" value={password} onChange={changePassword} />
       <button onClick={login}>LogIn</button>
+      <p>token: {token}</p>
     </>
   );
 
@@ -22,8 +24,31 @@ export default function Login(props) {
     setPassword(event.target.value);
   }
 
-  function login() {
+  async function login() {
     console.log(email, " : ", password);
-    const response = await fetch("localhost:");
+    const response = await fetch("https://localhost:7175/auth/Login", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ email: email, password: password }),
+    });
+    /*
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log("Error ->", err);
+      });
+    */
+    //console.log(response.json());
+    response.json().then((v) => {
+      console.log(v.token);
+      setToken(v.token);
+    });
+    /*let responsejson = response.json().then((v) => {
+      console.log(v);
+    });*/
+    //sconsole.log(responsejson);
   }
 }
