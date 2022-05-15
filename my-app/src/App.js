@@ -1,45 +1,53 @@
-import './App.css';
+import "./App.css";
 
-import {createTheme, ThemeProvider} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 import React from "react";
-import {Accueil} from "./Components/PageAccueil/Accueil";
-import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import { Accueil } from "./Components/PageAccueil/Accueil";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Login from "./Components/Login/Login";
+import Nav from "./Components/Nav/Nav";
 
 const theme = createTheme({
-    palette: {
-        primary: {
-            main: '#00A878',
-        },
-        secondary: {
-            main: '#F37748',
-        },
-        error: {
-            main: '#D72638',
-        },
-        warning: {
-            main: '#F3A712',
-        },
-        success: {
-            main: '#83BCFF',
-        },
-        background: {
-            main: '#F5FBEF',
-        },
+  palette: {
+    primary: {
+      main: "#00A878",
     },
+    secondary: {
+      main: "#F37748",
+    },
+    error: {
+      main: "#D72638",
+    },
+    warning: {
+      main: "#F3A712",
+    },
+    success: {
+      main: "#83BCFF",
+    },
+    background: {
+      main: "#F5FBEF",
+    },
+  },
 });
 
-
 export default function App() {
-
   return (
-      <ThemeProvider theme={theme}>
-          <Router>
-              <Routes>
-                  <Route exact path="/" element={<Accueil/>} />
-
-              </Routes>
-          </Router>
-      </ThemeProvider>
-
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Nav></Nav>
+        <Routes>
+          <Route exact path="/" element={<Accueil />} />
+          <Route path="/login" element={<Login />} />
+          <Route
+            path="*"
+            element={
+              <main style={{ padding: "1rem" }}>
+                <p>There's nothing here!</p>
+              </main>
+            }
+          />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 }
