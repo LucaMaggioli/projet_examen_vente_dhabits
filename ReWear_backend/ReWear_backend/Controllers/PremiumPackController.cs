@@ -81,21 +81,5 @@ namespace ReWear_backend.Controllers
                 Token = updatedToken
             });
         }
-
-        [HttpGet("me/all")]
-        [Authorize(AuthenticationSchemes ="Bearer")]
-        public async Task<IActionResult> GetLoggedUserBoughtPremiumPacks()
-        {
-            var loggedUserName = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Username").Value;
-            var loggedUser = _userManager.Users
-                .Include(u=> u.BoughtPacks)
-                .FirstOrDefault(u => u.UserName == loggedUserName);
-            if (loggedUser == null) return NotFound("User with token Id not found (cela ne devrais jamais se produire sinon c'est grave!)");
-
-            if (loggedUser.BoughtPacks == null) { return NotFound("User have never bought PremiumPacks");  }
-            var boughtPacks = loggedUser.BoughtPacks.ToList();
-
-            return Ok(boughtPacks);
-        }
     }
 }

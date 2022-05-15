@@ -5,7 +5,7 @@
         public BoughtPack() { }
         public BoughtPack(Guid id, DateTime boughtDate, PremiumPack premiumPack)
         {
-            Id = Id;
+            Id = id;
             BoughtDate = boughtDate;
             PremiumPack = premiumPack;
         }

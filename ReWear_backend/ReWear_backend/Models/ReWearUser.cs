@@ -9,7 +9,7 @@ namespace ReWear_backend.Models
         public bool IsAdmin { get; set; }
         //public bool IsPremium { get; set; }
         public DateTime EndPremiumDate { get; set; }
-        public List<BoughtPack>? BoughtPacks { get; set; }
+        public List<BoughtPack> BoughtPacks { get; set; }
 
         public bool? IsPremium()
         {
