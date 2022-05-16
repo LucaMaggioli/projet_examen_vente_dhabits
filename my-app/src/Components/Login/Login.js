@@ -6,6 +6,7 @@ export default function Login(props) {
   const [password, setPassword] = useState("Sp4ceDOG.2019");
   const [token, setToken] = useState("");
 
+  //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
   const { accessToken, setAccessToken, setLoggedUser } =
     useContext(ReWearApiContext);
   console.log("in login ->", accessToken);
@@ -39,6 +40,7 @@ export default function Login(props) {
     setPassword(event.target.value);
   }
 
+  //ici la méthode qui éffectue l'appel à l'api avec 'fetch()' et qui va sauver dans le contexte la valeur du token et username
   async function login() {
     console.log(email, " : ", password);
     const response = await fetch("https://localhost:7175/auth/Login", {
@@ -59,7 +61,9 @@ export default function Login(props) {
     //console.log(response.json());
     response.json().then((v) => {
       console.log(v.token);
+      // ceci est un state interne au composant, et en futur il sera jarté, il est la pour que tu comprenne la difference
       setToken(v.token);
+      //j'ai accés au 'states' du context grace à la ligne 9 ou j'utilise ces states à partir du contexte
       setAccessToken(v.token);
       setLoggedUser(v.userName);
     });
