@@ -1,10 +1,13 @@
-import React, { Component } from "react";
+import React, { useContext } from "react";
 import "./Nav.css";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+import { ReWearApiContext } from "../../Services/ReWearApiContext";
+
 export default function Nav() {
   let navigate = useNavigate();
+  const { loggedUser, logOut } = useContext(ReWearApiContext);
 
   //render() {
   return (
@@ -25,6 +28,9 @@ export default function Nav() {
       </div>
 
       <div id={"nav_droite"}>
+        <div id={"userName"}>
+          <p>{loggedUser}</p>
+        </div>
         <div id={"register"}>
           <Button
             variant={"contained"}
@@ -41,9 +47,11 @@ export default function Nav() {
           <Button
             variant={"text"}
             color={"background"}
-            onClick={() => navigate("/login")}
+            onClick={
+              loggedUser === null ? () => navigate("/login") : () => logOut()
+            }
           >
-            Connexion
+            {loggedUser === null ? "login" : "logout"}
           </Button>
         </div>
       </div>

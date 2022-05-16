@@ -1,12 +1,9 @@
-import React, { Component } from "react";
-import Login from "../Login/Login";
+import React, { useContext } from "react";
 
-export class Accueil extends Component {
-  render() {
-    return (
-      <>
-        <h2>en développement</h2>
-      </>
-    );
-  }
+export default function Accueil() {
+  return (
+    <>
+      <h2>en développement</h2>
+    </>
+  );
 }

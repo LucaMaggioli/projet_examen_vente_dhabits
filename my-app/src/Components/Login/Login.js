@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ReWearApiContext } from "../../Services/ReWearApiContext";
 
 export default function Login(props) {
   const [email, setEmail] = useState("space@mail.ch");
   const [password, setPassword] = useState("Sp4ceDOG.2019");
   const [token, setToken] = useState("");
+
+  const { accessToken, setAccessToken, setLoggedUser } =
+    useContext(ReWearApiContext);
+  console.log("in login ->", accessToken);
 
   return (
     <>
@@ -14,6 +19,16 @@ export default function Login(props) {
       <input id="password" value={password} onChange={changePassword} />
       <button onClick={login}>LogIn</button>
       <p>token: {token}</p>
+      <h3> Notes: </h3>
+      <p>
+        The token is a state of the Login component(const [token, setToken] =
+        useState("")),
+      </p>
+      <p>
+        {" "}
+        but we can access the state of ReWearApiContext -> const -accessToken,
+        setAccessToken- = useContext(ReWearApiContext)
+      </p>
     </>
   );
 
@@ -45,6 +60,8 @@ export default function Login(props) {
     response.json().then((v) => {
       console.log(v.token);
       setToken(v.token);
+      setAccessToken(v.token);
+      setLoggedUser(v.userName);
     });
     /*let responsejson = response.json().then((v) => {
       console.log(v);
