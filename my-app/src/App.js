@@ -4,6 +4,7 @@ import {createTheme, ThemeProvider} from "@mui/material";
 import React from "react";
 import {Accueil} from "./Components/PageAccueil/Accueil";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import {Register} from "./Components/Register/Register";
 
 const theme = createTheme({
     palette: {
@@ -36,6 +37,7 @@ export default function App() {
           <Router>
               <Routes>
                   <Route exact path="/" element={<Accueil/>} />
+                  <Route exact path="/register" element={<Register/>} />
 
               </Routes>
           </Router>
