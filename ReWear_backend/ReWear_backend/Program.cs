@@ -70,6 +70,11 @@ builder.Services.AddAuthentication(options =>
             ValidateLifetime = true
         };
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy=> policy.RequireClaim("IsAdmin", "True")) ;
+});
 //inject IdentityUser and IdentityRole to DbContext
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { //Replace IdentityUser with your customUser 'ReWearUser'
 builder.Services.AddIdentity<ReWearUser, IdentityRole>(options => {

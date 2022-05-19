@@ -34,6 +34,7 @@ namespace ReWear_backend.Services
                 {
                     new Claim("Id", user.Id),
                     new Claim("Username", user.UserName),
+                    new Claim("IsAdmin", user.IsAdmin.ToString()),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 }),

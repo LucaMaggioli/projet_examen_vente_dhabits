@@ -33,6 +33,24 @@ namespace ReWear_backend.Controllers
             return usersNames;
         }
 
+
+        [HttpPatch("{username}/upgradeToAdmin")]
+        [Authorize (AuthenticationSchemes = "Bearer", Policy ="AdminOnly")]
+        public async Task<IActionResult> UpgradeUserToAdmin(string username, [FromBody]bool isAdmin)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u=> u.UserName == username);
+            if(user == null) { return NotFound("User not found with given userName"); }
+
+            user.IsAdmin = isAdmin;
+
+            var updated = await _userManager.UpdateAsync(user);
+
+            //if the user that is updated is the logged user, I should return His new token with updated IsAdmin claim
+
+            if (updated.Succeeded) { return Ok(updated); }
+            else { return BadRequest(updated); }
+        }
+
         [HttpGet("{username}/dresses")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetDressesByUsername(string username)
