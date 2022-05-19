@@ -16,6 +16,7 @@ export default function Nav() {
         <div id={"title"} onClick={() => navigate("/")}>
           ReWear.
         </div>
+
         <div id={"search"}>
           <img
             id={"loupe"}
@@ -24,13 +25,17 @@ export default function Nav() {
           />
           Recherche
         </div>
+
         <div id={"sell"} onClick={() => navigate("/sell")}>Vendre</div>
       </div>
 
       <div id={"nav_droite"}>
+
         <div id={"userName"}>
-          <p>{loggedUser}</p>
+          {loggedUser}
         </div>
+
+        {!loggedUser &&
         <div id={"register"}>
           <Button
             variant={"contained"}
@@ -42,6 +47,7 @@ export default function Nav() {
             S'inscrire
           </Button>
         </div>
+        }
 
         <div id={"login"}>
           <Button
