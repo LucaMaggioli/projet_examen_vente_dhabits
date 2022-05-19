@@ -112,9 +112,10 @@ namespace ReWear_backend.Controllers
 
             var user = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Id == userId);
 
-            if (user == null) return NotFound();
+            if (user == null) return NotFound("User not found with Id in claim");
             if (user.EndPremiumDate <= DateTime.Now && user.Dresses.Count() >= 5)
             {
+                return Forbid("Upgrade to Premium to have more than 5 dresses");
                 return Unauthorized("Upgrade to Premium to have more than 5 dresses");
             }
 

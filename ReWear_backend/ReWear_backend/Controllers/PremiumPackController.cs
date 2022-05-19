@@ -32,21 +32,28 @@ namespace ReWear_backend.Controllers
             return Ok(allPremiumPacks);
         }
 
-        //[Authorized only by admin user]
         [HttpPost("add")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "AdminOnly")]
         public async Task<IActionResult> AddPremiumPack([FromBody]PremiumPackDto premiumPackToAdd)
         {
-            //_reWearDataContext.PremiumPack.Add()
             var addedPP = _reWearDataContext.PremiumPacks.Add(new PremiumPack(premiumPackToAdd));
             await _reWearDataContext.SaveChangesAsync();
             return Ok(addedPP.Entity);
         }
 
-        [HttpPatch("update")]
-        //[Authorized only by admin user]
-        public async Task<IActionResult> UpdatePremiumPack() //[FromBody] PremiumPackDto PremiumPackToAddDto
+        [HttpPatch("{premiumPackId}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "AdminOnly")]
+        public async Task<IActionResult> UpdatePremiumPack(Guid premiumPackId) //[FromBody] PremiumPackDto PremiumPackToAddDto
         {
-            //_reWearDataContext.PremiumPack.Add()
+            //TODO 
+            return Ok();
+        }
+
+        [HttpDelete("{premiumPackId}")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "AdminOnly")]
+        public async Task<IActionResult> DeletePremiumPack(Guid premiumPackId)
+        {
+            //TODO 
             return Ok();
         }
 
