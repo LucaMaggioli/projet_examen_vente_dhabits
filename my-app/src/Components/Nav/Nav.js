@@ -30,7 +30,7 @@ export function Nav() {
                         variant={"contained"}
                         color={"secondary"}
                         onClick={() => {
-                            navigate("/register");
+                            navigate("/signup");
                         }}
                     >
                         S'inscrire
