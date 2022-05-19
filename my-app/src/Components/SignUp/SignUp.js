@@ -1,9 +1,12 @@
 import React, { useState, useContext } from "react";
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
 
+
+
 export function SignUp(props) {
-    const [email, setEmail] = useState("space@mail.ch");
-    const [password, setPassword] = useState("Sp4ceDOG.2019");
+    const [name, setName] = useState("rewear");
+    const [email, setEmail] = useState("rewear@mail.ch");
+    const [password, setPassword] = useState("ReW34r.2022");
     const [token, setToken] = useState("");
 
     //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
@@ -14,16 +17,17 @@ export function SignUp(props) {
     return (
         <>
             <h1>SignUp</h1>
-            <h2>Hello, {props.name}</h2>
+            <label>Name</label>
+            <input id="name" value={name} onChange={changeName} />
             <label>Email</label>
             <input id="email" value={email} onChange={changeMail} />
             <label>Password</label>
             <input id="password" value={password} onChange={changePassword} />
-            <button onClick={login}>LogIn</button>
+            <button onClick={signUp}>SignUp</button>
             <p>token: {token}</p>
             <h3> Notes: </h3>
             <p>
-                The token is a state of the Login component(const [token, setToken] =
+                The token is a state of the SignUp component(const [token, setToken] =
                 useState("")),
             </p>
             <p>
@@ -34,6 +38,9 @@ export function SignUp(props) {
         </>
     );
 
+    function changeName(event) {
+        setName(event.target.value);
+    }
     function changeMail(event) {
         setEmail(event.target.value);
     }
@@ -42,14 +49,14 @@ export function SignUp(props) {
     }
 
     //ici la méthode qui éffectue l'appel à l'api avec 'fetch()' et qui va sauver dans le contexte la valeur du token et username
-    async function login() {
-        console.log(email, " : ", password);
-        const response = await fetch("https://localhost:7175/auth/Login", {
+    async function signUp() {
+        console.log(name, " : ", email, " : ", password);
+        const response = await fetch("https://localhost:7175/auth/Register", {
             method: "POST",
             headers: {
                 "content-type": "application/json",
             },
-            body: JSON.stringify({ email: email, password: password }),
+            body: JSON.stringify({ name: name, email: email, password: password }),
         });
         /*
           .then((res) => {
