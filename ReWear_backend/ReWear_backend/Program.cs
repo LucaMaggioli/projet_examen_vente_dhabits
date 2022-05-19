@@ -13,10 +13,23 @@ using System.Collections.Generic;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+const string MyCorsPolicy = "allowAnyPolicy";
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddCors();
+/*
+ * options =>
+{
+    options.AddPolicy(name: MyCorsPolicy,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin();
+                            //.WithOrigins("localhost:3000");
+                      });
+}
+ * */
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -103,5 +116,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+//app.UseCors(MyCorsPolicy);
+app.UseCors(c =>  c
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                );
 
 app.Run();

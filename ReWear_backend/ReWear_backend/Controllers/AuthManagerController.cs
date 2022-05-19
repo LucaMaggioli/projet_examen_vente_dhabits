@@ -72,6 +72,7 @@ namespace ReWear_backend.Controllers
                     return Ok(new RegistrationResponse
                     {
                         Result = true,
+                        UserName = existingUser.UserName,
                         Token = jwtToken
                     });
                 }
