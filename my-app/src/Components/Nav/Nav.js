@@ -24,7 +24,7 @@ export default function Nav() {
           />
           Recherche
         </div>
-        <div id={"sell"}>Vendre</div>
+        <div id={"sell"} onClick={() => navigate("/sell")}>Vendre</div>
       </div>
 
       <div id={"nav_droite"}>
