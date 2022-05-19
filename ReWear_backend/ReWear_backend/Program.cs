@@ -85,6 +85,7 @@ builder.Services.AddIdentity<ReWearUser, IdentityRole>(options => {
 builder.Services.AddTransient<TokenManagerService>();
 //services.AddTransient<IArticleDataProvider, ArticleDataProvider>();
 builder.Services.AddTransient<RegexUtilities>();
+builder.Services.AddTransient<UserService>();
 
 //the following line allow to use the HttpContextAccessor in controller for example to acces the JWT access_token
 //builder.Services.AddHttpContextAccessor();

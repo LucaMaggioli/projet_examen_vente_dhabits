@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ReWear_backend.Data;
 using ReWear_backend.DTOs;
 using ReWear_backend.Models;
+using ReWear_backend.Services;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace ReWear_backend.Controllers
@@ -17,12 +18,14 @@ namespace ReWear_backend.Controllers
         private readonly UserManager<ReWearUser> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReWearDataContext _reWearDataContext;
+        private readonly UserService _userService;
 
-        public UserController(UserManager<ReWearUser> userManager, IHttpContextAccessor httpContextAccessor, ReWearDataContext reWearDataContext)
+        public UserController(UserManager<ReWearUser> userManager, IHttpContextAccessor httpContextAccessor, ReWearDataContext reWearDataContext, UserService userService)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _reWearDataContext = reWearDataContext;
+            _userService = userService;
         }
 
         [HttpGet("all")]
@@ -62,25 +65,27 @@ namespace ReWear_backend.Controllers
 
             return Ok(user.Dresses);
         }
+        
+        [HttpGet("me/dresses")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> GetLoggedUserDresses()
+        {
+            var user = _userService.GetUserLoggedWithDresses();
+            if (user == null) return NotFound();
+
+            return Ok(user.Dresses);
+        }
 
         [HttpGet("me/premiumDetails")]
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetLoggedUserPremiumPacksBought()
         {
-            var loggedUserName = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Username").Value;
-            var loggedUser = _userManager.Users
-                .Include(u => u.BoughtPacks)
-                .ThenInclude(boughtPack => boughtPack.PremiumPack)
-                .FirstOrDefault(u => u.UserName == loggedUserName);
+            var loggedUser = _userService.GetUserLoggedWithBoughPacks();
             if (loggedUser == null) return NotFound("User with token Id not found (cela ne devrais jamais se produire sinon c'est grave!)");
-
-            if (loggedUser.BoughtPacks == null) { return NotFound("User have never bought PremiumPacks"); }
-            var boughtPacks = loggedUser.BoughtPacks.ToList();
 
             UserPremiumDetailsResponseDTO response = new UserPremiumDetailsResponseDTO
             {
-                BoughtPacks = boughtPacks,
-                //IsPremium = loggedUser.IsPremium(), 
+                BoughtPacks = loggedUser.BoughtPacks.ToList(),
                 IsPremium = loggedUser.EndPremiumDate > DateTime.Now,
                 IsAdmin = loggedUser.IsAdmin,
                 EndPremiumDate = loggedUser.EndPremiumDate
@@ -88,21 +93,6 @@ namespace ReWear_backend.Controllers
 
             return Ok(response);
         }
-
-        [HttpGet("me/dresses")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
-        public async Task<IActionResult> GetLoggedUserDresses()
-        {
-            var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
-            
-            var Username = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Username").Value;
-
-            var user = _userManager.Users.Include(user => user.Dresses).FirstOrDefault(u => u.UserName == Username);
-            if (user == null) return NotFound();
-
-            return Ok(user.Dresses);
-        }
-
 
         [HttpPost("me/dress")]
         [Authorize(AuthenticationSchemes = "Bearer")]
