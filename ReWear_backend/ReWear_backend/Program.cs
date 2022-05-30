@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ReWear_backend.Data;
 using ReWear_backend.Models;
+using ReWear_backend.Policies;
 using ReWear_backend.Services;
 using System.Collections.Generic;
 using System.Text;
@@ -74,6 +75,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy=> policy.RequireClaim("IsAdmin", "True")) ;
+    options.AddPolicy("Max5Dresses", policy =>
+            policy.Requirements.Add(new MaxDressRequirement(5)));
 });
 //inject IdentityUser and IdentityRole to DbContext
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { //Replace IdentityUser with your customUser 'ReWearUser'

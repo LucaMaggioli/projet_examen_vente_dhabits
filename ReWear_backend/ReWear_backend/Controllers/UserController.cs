@@ -19,13 +19,21 @@ namespace ReWear_backend.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReWearDataContext _reWearDataContext;
         private readonly UserService _userService;
+        private readonly IAuthorizationService _authorizationService;
 
-        public UserController(UserManager<ReWearUser> userManager, IHttpContextAccessor httpContextAccessor, ReWearDataContext reWearDataContext, UserService userService)
+
+        public UserController(
+            UserManager<ReWearUser> userManager,
+            IHttpContextAccessor httpContextAccessor,
+            ReWearDataContext reWearDataContext,
+            UserService userService,
+            IAuthorizationService authorizationService)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _reWearDataContext = reWearDataContext;
             _userService = userService;
+            _authorizationService = authorizationService;
         }
 
         [HttpGet("all")]
@@ -101,6 +109,11 @@ namespace ReWear_backend.Controllers
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
 
             var user = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Id == userId);
+            
+            var userDressesCount = user.Dresses.Count();
+
+
+
 
             if (user == null) return NotFound("User not found with Id in claim");
             if (user.EndPremiumDate <= DateTime.Now && user.Dresses.Count() >= 5)
