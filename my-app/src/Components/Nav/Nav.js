@@ -1,53 +1,64 @@
-import React from "react";
+
+import React, { useContext } from "react";
+
 import "./Nav.css";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-export function Nav() {
-    let navigate = useNavigate();
 
-    //render() {
-    return (
-        <div id={"nav"}>
-            <div id={"nav_gauche"}>
-                <div id={"title"} onClick={() => navigate("/")}>
-                    ReWear.
-                </div>
-                <div id={"search"}>
-                    <img
-                        id={"loupe"}
-                        src={require("../../assets/iconLoupeBlanc1.png")}
-                        alt="loupe"
-                    />
-                    Recherche
-                </div>
-                <div id={"sell"}>Vendre</div>
-            </div>
+import { ReWearApiContext } from "../../Services/ReWearApiContext";
 
-            <div id={"nav_droite"}>
-                <div id={"register"}>
-                    <Button
-                        variant={"contained"}
-                        color={"secondary"}
-                        onClick={() => {
-                            navigate("/signup");
-                        }}
-                    >
-                        S'inscrire
-                    </Button>
-                </div>
+export default function Nav() {
+  let navigate = useNavigate();
+  const { loggedUser, logOut } = useContext(ReWearApiContext);
 
-                <div id={"login"}>
-                    <Button
-                        variant={"text"}
-                        color={"background"}
-                        onClick={() => navigate("/login")}
-                    >
-                        Connexion
-                    </Button>
-                </div>
-            </div>
+  //render() {
+  return (
+    <div id={"nav"}>
+      <div id={"nav_gauche"}>
+        <div id={"title"} onClick={() => navigate("/")}>
+          ReWear.
         </div>
-    );
+        <div id={"search"}>
+          <img
+            id={"loupe"}
+            src={require("../../assets/iconLoupeBlanc1.png")}
+            alt="loupe"
+          />
+          Recherche
+        </div>
+        <div id={"sell"}>Vendre</div>
+      </div>
+
+      <div id={"nav_droite"}>
+        <div id={"userName"}>
+          <p>{loggedUser}</p>
+        </div>
+        <div id={"register"}>
+          <Button
+            variant={"contained"}
+            color={"secondary"}
+            onClick={() => {
+              navigate("/singin");
+            }}
+          >
+            S'inscrire
+          </Button>
+        </div>
+
+        <div id={"login"}>
+          <Button
+            variant={"text"}
+            color={"background"}
+            onClick={
+              loggedUser === null ? () => navigate("/login") : () => logOut()
+            }
+          >
+            {loggedUser === null ? "login" : "logout"}
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 }
 //}

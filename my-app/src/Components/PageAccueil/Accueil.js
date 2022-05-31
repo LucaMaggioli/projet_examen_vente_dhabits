@@ -1,11 +1,11 @@
-import React, {Component} from "react";
 
-export class Accueil extends Component {
-    render() {
-        return (
-            <>
-                <h2>en développement</h2>
-            </>
-        );
-    }
+import React, { useContext } from "react";
+
+export default function Accueil() {
+  return (
+    <>
+      <h2>en développement</h2>
+    </>
+  );
+
 }
