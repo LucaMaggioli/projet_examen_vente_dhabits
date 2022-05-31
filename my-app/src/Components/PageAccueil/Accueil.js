@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 
 export default function Accueil() {
@@ -6,4 +7,5 @@ export default function Accueil() {
       <h2>en développement</h2>
     </>
   );
+
 }
