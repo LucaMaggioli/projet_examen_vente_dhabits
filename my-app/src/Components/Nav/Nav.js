@@ -34,12 +34,12 @@ export default function Nav() {
         <div id={"userName"}>
           <p>{loggedUser}</p>
         </div>
-        <div id={"register"}>
+        <div id={"signup"}>
           <Button
             variant={"contained"}
             color={"secondary"}
             onClick={() => {
-              navigate("/singin");
+              navigate("/signup");
             }}
           >
             S'inscrire
