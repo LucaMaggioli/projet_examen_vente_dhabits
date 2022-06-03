@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ReWear_backend.DTOs;
 using ReWear_backend.Models;
 using ReWear_backend.Services;
@@ -58,15 +59,28 @@ namespace ReWear_backend.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDto user)
         {
             // Vérifier si l'utilisateur avec le même email existe
-            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+            var existingUser = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Email == user.Email);
+
 
             if (existingUser != null)
             {
+                // Dabors on vérifie si l'utilisateur n'est pas bloqué par un eccés de mot de passes erronés
+                var lockoutDate = await _userManager.GetLockoutEndDateAsync(existingUser);
+                if (lockoutDate >= DateTimeOffset.Now)
+                {
+                    var message = $"Too Many Logins With wrong password, wait {(lockoutDate - DateTimeOffset.Now).Value.Minutes + 1} minutes";
+                    return BadRequest(new RegistrationResponse
+                    {
+                        Result = false,
+                        Message = message.ToString()
+                    });
+                }
+
                 // Maintenant, nous devons vérifier si l'utilisateur a entré le bon mot de passe.
                 var isCorrect = await _userManager.CheckPasswordAsync(existingUser, user.Password);
-
                 if (isCorrect)
                 {
+                    await _userManager.SetLockoutEndDateAsync(existingUser, DateTimeOffset.Now);
                     var jwtToken = await _tokenManagerService.GenerateJwtTokenFromIdentityUser(existingUser);
 
                     return Ok(new RegistrationResponse
@@ -75,6 +89,10 @@ namespace ReWear_backend.Controllers
                         UserName = existingUser.UserName,
                         Token = jwtToken
                     });
+                }
+                else
+                {
+                    await _userManager.AccessFailedAsync(existingUser);
                 }
             }
 

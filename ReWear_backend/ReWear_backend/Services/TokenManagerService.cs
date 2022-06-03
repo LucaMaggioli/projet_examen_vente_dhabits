@@ -34,6 +34,9 @@ namespace ReWear_backend.Services
                 {
                     new Claim("Id", user.Id),
                     new Claim("Username", user.UserName),
+                    new Claim("IsAdmin", user.IsAdmin.ToString()),
+                    new Claim("dressesCount", user.Dresses.Count().ToString()),
+                    new Claim("endPremiumDate", user.EndPremiumDate.ToString()),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 }),
@@ -44,7 +47,6 @@ namespace ReWear_backend.Services
             };
             //another way to add claims to token
             tokenDescriptor.Subject.AddClaim(new Claim("school", "epsic"));
-            tokenDescriptor.Subject.AddClaim(new Claim("IsPremium", user.IsPremium().ToString()));
 
             var userRoles = await _userManager.GetRolesAsync(user);
             userRoles.ToList().ForEach(role => {
