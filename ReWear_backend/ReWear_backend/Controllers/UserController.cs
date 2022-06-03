@@ -108,17 +108,38 @@ namespace ReWear_backend.Controllers
         {
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
 
-            var user = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Id == userId);
-            
+            var loggedUser = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Id == userId);
+            if (loggedUser == null) return NotFound("User with token Id not found (cela ne devrais jamais se produire sinon c'est grave!)");
+
             var newDress = new Dress(DressToAddDto);
 
             _reWearDataContext.Dresses.Add(newDress);
 
-            user.Dresses.Add(newDress);
+            loggedUser.Dresses.Add(newDress);
 
             await _reWearDataContext.SaveChangesAsync();
 
-            return Ok(user.Dresses);
+            return Ok(loggedUser.Dresses);
+        }
+
+        [HttpDelete("me/dress/{id}")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        public async Task<IActionResult> DeleteDressToUser(Guid id)
+        {
+            var dressToDelete = await _reWearDataContext.Dresses.FirstOrDefaultAsync(d => d.Id == id);
+            if (dressToDelete == null) return NotFound("Dress Not Found with given Id");
+
+            var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
+
+            var loggedUser = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Id == userId);
+            if (loggedUser == null) return NotFound("User with token Id not found (cela ne devrais jamais se produire sinon c'est grave!)");
+
+            if (!loggedUser.Dresses.Contains(dressToDelete)) return NotFound("User don't have this dress");
+
+            loggedUser.Dresses.Remove(dressToDelete);
+            await _reWearDataContext.SaveChangesAsync();
+
+            return Ok(String.Format("Dress with Id '{0}' deleted", id));
         }
     }
 }
