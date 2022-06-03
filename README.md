@@ -40,8 +40,14 @@ Notes:
 	- lancer la commande `dotnet build`
 	- lancer la commande `dotnet run`
 	- acceder à swagger avec un navigateur à la suivante adresse: `https://localhost:7175/swagger/index.html`
+	- User admin disponible:
+		- username: space_dog
+		- pswd: Sp4ceDOG.2019
+		- email: space@mail.ch
+	- Une fois le login éffectué, insérer le token obtenu directement dans `Authorize` de swagger (sans 'Bearer ' devant)
+	- Les Users non premium ne peuvent pas avoir plus que 5 `dresses`
+	- Les Users non premium peuvent acheter un PremiumPack
+	- Les Users Premium peuvent avoir plus que 5 `dresses`
+	- Les Users Admin peuvent gérér les premiumpacks et faire devenir d'autres Users Admin
 	- enjoy 😉
-- login for ReWearTest.db:
-	- username: space_dog
-	- pswd: Sp4ceDOG.2019
-	- email: space@mail.ch
+
