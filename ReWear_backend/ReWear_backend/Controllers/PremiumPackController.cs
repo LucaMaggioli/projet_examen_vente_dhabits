@@ -47,16 +47,20 @@ namespace ReWear_backend.Controllers
         [Authorize(AuthenticationSchemes = "Bearer", Policy = "AdminOnly")]
         public async Task<IActionResult> UpdatePremiumPack(Guid premiumPackId) //[FromBody] PremiumPackDto PremiumPackToAddDto
         {
-            //TODO 
-            return Ok();
+            return Ok("Still not implemented");
         }
 
         [HttpDelete("{premiumPackId}")]
         [Authorize(AuthenticationSchemes = "Bearer", Policy = "AdminOnly")]
         public async Task<IActionResult> DeletePremiumPack(Guid premiumPackId)
         {
-            //TODO 
-            return Ok();
+            var premiumPack = await _reWearDataContext.PremiumPacks.FirstOrDefaultAsync(p=> p.Id == premiumPackId);
+            if (premiumPack == null) return NotFound("PremiumPack not Found with given Id");
+
+            _reWearDataContext.PremiumPacks.Remove(premiumPack);
+            await _reWearDataContext.SaveChangesAsync();
+
+            return Ok("Premium Pack succesfully deleted");
         }
 
         [HttpGet("buy/{premiumPackId}")]
