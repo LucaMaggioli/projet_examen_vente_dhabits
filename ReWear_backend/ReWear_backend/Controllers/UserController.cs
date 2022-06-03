@@ -88,7 +88,7 @@ namespace ReWear_backend.Controllers
         [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetLoggedUserPremiumPacksBought()
         {
-            var loggedUser = _userService.GetUserLoggedWithBoughPacks();
+            var loggedUser = _userService.GetFullUser();
             if (loggedUser == null) return NotFound("User with token Id not found (cela ne devrais jamais se produire sinon c'est grave!)");
 
             UserPremiumDetailsResponseDTO response = new UserPremiumDetailsResponseDTO

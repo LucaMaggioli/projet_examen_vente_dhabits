@@ -32,10 +32,11 @@ namespace ReWear_backend.Services
                 .FirstOrDefault(u => u.Id == userId);
             return loggedUser;
         }
-        public ReWearUser GetUserLoggedWithBoughPacks()
+        public ReWearUser GetFullUser()
         {
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
             var loggedUser = _userManager.Users
+                .Include(u=> u.Dresses)
                 .Include(u => u.BoughtPacks)
                 .ThenInclude(boughtPack => boughtPack.PremiumPack)
                 .FirstOrDefault(u => u.Id == userId);
@@ -44,6 +45,7 @@ namespace ReWear_backend.Services
         }
         public ReWearUser BuyPremiumPackForUser(ReWearUser user, PremiumPack premiumPackToBuy)
         {
+            //var boughtPack = ;
             user.BoughtPacks.Add(new BoughtPack(new Guid(), DateTime.Now, premiumPackToBuy));
             if (user.EndPremiumDate < DateTime.Now)
             {
@@ -51,7 +53,7 @@ namespace ReWear_backend.Services
             }
             else
             {
-                user.EndPremiumDate.AddDays(premiumPackToBuy.ValidityDays);
+                user.EndPremiumDate =  user.EndPremiumDate.AddDays(premiumPackToBuy.ValidityDays);
             }
             _reWearDataContext.SaveChanges();
 

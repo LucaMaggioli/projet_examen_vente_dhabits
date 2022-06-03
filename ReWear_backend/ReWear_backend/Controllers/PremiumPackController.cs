@@ -62,7 +62,7 @@ namespace ReWear_backend.Controllers
         [Authorize (AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> BuyPremiumPack(Guid premiumPackId)
         {
-            var loggedUser = _userService.GetUserLogged();
+            var loggedUser = _userService.GetFullUser();
             if (loggedUser == null) return NotFound("User with token Id not found (cela ne devrais jamais se produire sinon c'est grave!)");
 
             var premiumPackToBuy = _reWearDataContext.PremiumPacks.FirstOrDefault(p => p.Id == premiumPackId);
