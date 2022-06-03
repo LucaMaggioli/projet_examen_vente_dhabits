@@ -113,8 +113,6 @@ namespace ReWear_backend.Controllers
             var userDressesCount = user.Dresses.Count();
 
 
-
-
             if (user == null) return NotFound("User not found with Id in claim");
             if (user.EndPremiumDate <= DateTime.Now && user.Dresses.Count() >= 5)
             {

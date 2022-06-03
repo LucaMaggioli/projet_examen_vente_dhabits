@@ -1,0 +1,66 @@
+#nav {
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    height: 90px;
+    background-color: #00A878;
+}
+
+#nav_gauche {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    float: left;
+}
+
+#title {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 90px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    font-family: 'Work Sans', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 35px;
+
+    color: #F5FBEF;
+}
+
+
+
+#loupe {
+    width: 30px;
+}
+
+
+#nav_droite{
+    display: flex;
+    flex-direction: row;
+    float: right;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#search, #sell {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 90px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    font-family: 'Work Sans', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+
+    color: #F5FBEF;
+}

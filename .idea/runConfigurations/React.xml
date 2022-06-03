@@ -1,0 +1,23 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="React" type="ReactNative" factoryName="React Native">
+    <working-dir value="$PROJECT_DIR$/my-app" />
+    <node-interpreter value="project" />
+    <react-native value="" />
+    <platform value="ANDROID" />
+    <envs />
+    <only-packager />
+    <build-and-launch value="false" />
+    <browser value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
+    <method v="2">
+      <option name="NpmBeforeRunTask" enabled="true">
+        <package-json value="$PROJECT_DIR$/my-app/package.json" />
+        <command value="run" />
+        <scripts>
+          <script value="start" />
+        </scripts>
+        <node-interpreter value="project" />
+        <envs />
+      </option>
+    </method>
+  </configuration>
+</component>
