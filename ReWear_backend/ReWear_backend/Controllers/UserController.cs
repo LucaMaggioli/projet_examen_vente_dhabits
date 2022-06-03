@@ -103,23 +103,13 @@ namespace ReWear_backend.Controllers
         }
 
         [HttpPost("me/dress")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(AuthenticationSchemes = "Bearer", Policy = "Max5DressesOrPremium")]
         public async Task<IActionResult> AddDressToUser([FromBody] DressDto DressToAddDto)
         {
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
 
             var user = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Id == userId);
             
-            var userDressesCount = user.Dresses.Count();
-
-
-            if (user == null) return NotFound("User not found with Id in claim");
-            if (user.EndPremiumDate <= DateTime.Now && user.Dresses.Count() >= 5)
-            {
-                return Forbid("Upgrade to Premium to have more than 5 dresses");
-                return Unauthorized("Upgrade to Premium to have more than 5 dresses");
-            }
-
             var newDress = new Dress(DressToAddDto);
 
             _reWearDataContext.Dresses.Add(newDress);

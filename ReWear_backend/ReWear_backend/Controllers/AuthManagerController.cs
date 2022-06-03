@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ReWear_backend.DTOs;
 using ReWear_backend.Models;
 using ReWear_backend.Services;
@@ -58,7 +59,8 @@ namespace ReWear_backend.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDto user)
         {
             // Vérifier si l'utilisateur avec le même email existe
-            var existingUser = await _userManager.FindByEmailAsync(user.Email);
+            var existingUser = await _userManager.Users.Include(u => u.Dresses).FirstOrDefaultAsync(u => u.Email == user.Email);
+
 
             if (existingUser != null)
             {

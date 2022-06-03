@@ -2,10 +2,10 @@
 
 namespace ReWear_backend.Policies
 {
-    public class MaxDressRequirement: IAuthorizationRequirement
+    public class MaxDressOrPremiumRequirement: IAuthorizationRequirement
     {
         public int MaxDresses { get; set; }
-        public MaxDressRequirement(int maxDresses)
+        public MaxDressOrPremiumRequirement(int maxDresses)
         {
             MaxDresses = maxDresses;
         }

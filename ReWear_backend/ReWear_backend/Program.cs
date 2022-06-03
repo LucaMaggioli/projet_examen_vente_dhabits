@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,27 +8,15 @@ using ReWear_backend.Data;
 using ReWear_backend.Models;
 using ReWear_backend.Policies;
 using ReWear_backend.Services;
-using System.Collections.Generic;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-const string MyCorsPolicy = "allowAnyPolicy";
 
 // Add services to the container.
 
 builder.Services.AddControllers();
 builder.Services.AddCors();
-/*
- * options =>
-{
-    options.AddPolicy(name: MyCorsPolicy,
-                      policy =>
-                      {
-                          policy.AllowAnyOrigin();
-                            //.WithOrigins("localhost:3000");
-                      });
-}
- * */
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -88,26 +74,25 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy=> policy.RequireClaim("IsAdmin", "True")) ;
-    options.AddPolicy("Max5Dresses", policy =>
-            policy.Requirements.Add(new MaxDressRequirement(5)));
+options.AddPolicy("Max5DressesOrPremium", policy =>
+            policy.AddRequirements(new MaxDressOrPremiumRequirement(6)));
 });
 //inject IdentityUser and IdentityRole to DbContext
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => { //Replace IdentityUser with your customUser 'ReWearUser'
-builder.Services.AddIdentity<ReWearUser, IdentityRole>(options => {
+builder.Services.AddIdentity<ReWearUser, IdentityRole>(options => { //ReWearUser extends from IdentityUser
     options.User.RequireUniqueEmail = true;
 })
     .AddEntityFrameworkStores<ReWearDataContext>();
 
 builder.Services.AddTransient<TokenManagerService>();
-//services.AddTransient<IArticleDataProvider, ArticleDataProvider>();
 builder.Services.AddTransient<RegexUtilities>();
 builder.Services.AddTransient<UserService>();
+
+builder.Services.AddSingleton<IAuthorizationHandler, MaxDressOrPremiumHandler>();
+builder.Services.AddSingleton<IAuthorizationHandler, IsPremiumHandler>();
 
 //the following line allow to use the HttpContextAccessor in controller for example to acces the JWT access_token
 //builder.Services.AddHttpContextAccessor();
 //builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-
-
 
 var app = builder.Build();
 
@@ -126,7 +111,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-//app.UseCors(MyCorsPolicy);
+//To allow Cors
 app.UseCors(c =>  c
                 .AllowAnyOrigin()
                 .AllowAnyHeader()

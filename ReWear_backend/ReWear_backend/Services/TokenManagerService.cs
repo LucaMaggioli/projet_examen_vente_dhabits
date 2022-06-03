@@ -35,6 +35,8 @@ namespace ReWear_backend.Services
                     new Claim("Id", user.Id),
                     new Claim("Username", user.UserName),
                     new Claim("IsAdmin", user.IsAdmin.ToString()),
+                    new Claim("dressesCount", user.Dresses.Count().ToString()),
+                    new Claim("endPremiumDate", user.EndPremiumDate.ToString()),
                     new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 }),
