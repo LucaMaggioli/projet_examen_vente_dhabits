@@ -1,10 +1,13 @@
 import React, { useState, useContext } from "react";
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
+import Cookies from "universal-cookie";
 
 export default function Login(props) {
   const [email, setEmail] = useState("space@mail.ch");
   const [password, setPassword] = useState("Sp4ceDOG.2019");
   const [token, setToken] = useState("");
+
+  const cookies = new Cookies();
 
   //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
   const { accessToken, setAccessToken, setLoggedUser } =
@@ -61,15 +64,22 @@ export default function Login(props) {
     //console.log(response.json());
     response.json().then((v) => {
       console.log(v.token);
+
       // ceci est un state interne au composant, et en futur il sera jarté, il est la pour que tu comprenne la difference
       setToken(v.token);
       //j'ai accés au 'states' du context grace à la ligne 9 ou j'utilise ces states à partir du contexte
       setAccessToken(v.token);
       setLoggedUser(v.userName);
+
+      cookies.set('jwt_token', v.token);
+
     });
+
     /*let responsejson = response.json().then((v) => {
       console.log(v);
     });*/
     //sconsole.log(responsejson);
+
+
   }
 }
