@@ -83,6 +83,18 @@ builder.Services.AddIdentity<ReWearUser, IdentityRole>(options => { //ReWearUser
     options.User.RequireUniqueEmail = true;
 })
     .AddEntityFrameworkStores<ReWearDataContext>();
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+    options.Lockout.MaxFailedAccessAttempts = 3;
+
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 6;
+});
 
 builder.Services.AddTransient<TokenManagerService>();
 builder.Services.AddTransient<RegexUtilities>();

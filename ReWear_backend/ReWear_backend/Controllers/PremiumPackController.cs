@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using ReWear_backend.Models;
 using ReWear_backend.Data;
@@ -13,15 +12,11 @@ namespace ReWear_backend.Controllers
     [ApiController]
     public class PremiumPackController : ControllerBase
     {
-        private readonly UserManager<ReWearUser> _userManager;
-        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ReWearDataContext _reWearDataContext;
         private readonly TokenManagerService _tokenManagerService;
         private readonly UserService _userService;
-        public PremiumPackController(IHttpContextAccessor httpContextAccessor, UserManager<ReWearUser> userManager, ReWearDataContext reWearDataContext, TokenManagerService tokenManagerService, UserService userService)
+        public PremiumPackController(ReWearDataContext reWearDataContext, TokenManagerService tokenManagerService, UserService userService)
         {
-            _httpContextAccessor = httpContextAccessor;
-            _userManager = userManager;
             _reWearDataContext = reWearDataContext;
             _tokenManagerService = tokenManagerService;
             _userService = userService;

@@ -64,11 +64,23 @@ namespace ReWear_backend.Controllers
 
             if (existingUser != null)
             {
+                // Dabors on vérifie si l'utilisateur n'est pas bloqué par un eccés de mot de passes erronés
+                var lockoutDate = await _userManager.GetLockoutEndDateAsync(existingUser);
+                if (lockoutDate >= DateTimeOffset.Now)
+                {
+                    var message = $"Too Many Logins With wrong password, wait {(lockoutDate - DateTimeOffset.Now).Value.Minutes + 1} minutes";
+                    return BadRequest(new RegistrationResponse
+                    {
+                        Result = false,
+                        Message = message.ToString()
+                    });
+                }
+
                 // Maintenant, nous devons vérifier si l'utilisateur a entré le bon mot de passe.
                 var isCorrect = await _userManager.CheckPasswordAsync(existingUser, user.Password);
-
                 if (isCorrect)
                 {
+                    await _userManager.SetLockoutEndDateAsync(existingUser, DateTimeOffset.Now);
                     var jwtToken = await _tokenManagerService.GenerateJwtTokenFromIdentityUser(existingUser);
 
                     return Ok(new RegistrationResponse
@@ -77,6 +89,10 @@ namespace ReWear_backend.Controllers
                         UserName = existingUser.UserName,
                         Token = jwtToken
                     });
+                }
+                else
+                {
+                    await _userManager.AccessFailedAsync(existingUser);
                 }
             }
 
