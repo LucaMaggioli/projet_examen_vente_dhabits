@@ -35,6 +35,12 @@ Premium:
 - payement par twint
 
 Notes:
+	- pour lancer l'application backend:
+		- aller dans le repertoire `projet_examen_vente_dhabits/ReWear_backend/ReWear_backend`
+		- lancer la commande `dotnet build`
+		- lancer la commande `dotnet run`
+		- acceder à swagger avec un navigateur à la suivante adresse: `https://localhost:7175/swagger/index.html`
+		- enjoy 😉
 	- login for ReWearTest.db:
 		- username: space_dog
 		- pswd: Sp4ceDOG.2019
