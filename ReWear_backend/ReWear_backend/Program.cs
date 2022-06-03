@@ -76,7 +76,9 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("AdminOnly", policy=> policy.RequireClaim("IsAdmin", "True")) ;
     options.AddPolicy("Max5DressesOrPremium", policy =>
                 policy.AddRequirements(new MaxDressOrPremiumRequirement(6)));
-    });
+    options.AddPolicy("PremiumOnly", policy =>
+                policy.AddRequirements(new IsPremiumRequirement()));
+});
 
 //inject IdentityUser and IdentityRole to DbContext
 builder.Services.AddIdentity<ReWearUser, IdentityRole>(options => { //ReWearUser extends from IdentityUser
