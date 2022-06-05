@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
+import API from '../../Utils/AxiosInstance';
 
 export default function Login(props) {
   const [email, setEmail] = useState("space@mail.ch");
   const [password, setPassword] = useState("Sp4ceDOG.2019");
 
   //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-  const { accessToken, setAccessToken, setLoggedUser, logIn} =
+  const { accessToken, logIn, logOut} =
     useContext(ReWearApiContext);
 
   return (
@@ -38,35 +39,19 @@ export default function Login(props) {
     setPassword(event.target.value);
   }
 
-  //ici la méthode qui éffectue l'appel à l'api avec 'fetch()' et qui va sauver dans le contexte la valeur du token et username
   async function login() {
-    console.log(email, " : ", password);
-    const response = await fetch("https://localhost:7175/auth/Login", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({ email: email, password: password }),
-    });
-    /*
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log("Error ->", err);
-      });
-    */
-    //console.log(response.json());
-    response.json().then((v) => {
 
-      console.log(v.token);
+      const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
 
-      logIn(v.token, v.userName);
+      if(response.status === 200){
+          logIn(response.data.token, response.data.userName);
+      } else if (response.statusText === 'Unauthorized'){
+          logOut();
+      }
 
-    });
-    /*let responsejson = response.json().then((v) => {
-      console.log(v);
-    });*/
-    //sconsole.log(responsejson);
+      console.log(response);
+      console.log(response.data);
+
   }
+
 }

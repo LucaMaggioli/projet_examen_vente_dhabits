@@ -34,7 +34,6 @@ const ReWearApiContextProvider = ({ children }) => {
     setLoggedUser(username);
     setAccessCookie(cookies_token.get("jwt"));
 
-
     navigate("/");
   }
 
