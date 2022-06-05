@@ -12,6 +12,7 @@ export default function Nav() {
   let navigate = useNavigate();
   const { loggedUser, logOut, accessCookie} = useContext(ReWearApiContext);
 
+
   //render() {
   return (
     <div id={"nav"}>

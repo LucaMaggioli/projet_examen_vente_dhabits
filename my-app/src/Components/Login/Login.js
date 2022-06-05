@@ -1,12 +1,17 @@
 import React, { useState, useContext } from "react";
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
+
+import Cookies from "universal-cookie";
 import API from '../../Utils/AxiosInstance';
 import {Button, Form} from "react-bootstrap";
+
 
 export default function Login(props) {
   const [email, setEmail] = useState("space@mail.ch");
   const [password, setPassword] = useState("Sp4ceDOG.2019");
   const [token, setToken] = useState("");
+
+  const cookies = new Cookies();
 
   //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
   const { accessToken, logIn, logOut} =
