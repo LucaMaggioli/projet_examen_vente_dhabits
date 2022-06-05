@@ -12,8 +12,9 @@ import {
   ReWearApiContext,
   ReWearApiContextProvider,
 } from "./Services/ReWearApiContext";
-import {SignUp} from "./Components/SignUp/SignUp";
 
+import {SignUp} from "./Components/SignUp/SignUp";
+import {Sell} from "./Components/Sell/Sell";
 
 const theme = createTheme({
   palette: {
@@ -52,7 +53,7 @@ export default function App() {
             <Route exact path="/" element={<Accueil />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-
+            <Route path="/sell" element={<Sell />} />
             <Route
               path="*"
               element={
