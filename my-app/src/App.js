@@ -15,6 +15,7 @@ import {
 import {SignUp} from "./Components/SignUp/SignUp";
 import Sell from "./Components/Sell/Sell";
 import Cookies from "universal-cookie";
+import User from "./Components/User/User";
 
 
 const theme = createTheme({
@@ -42,7 +43,7 @@ const theme = createTheme({
 
 export default function App() {
   //cette ligne pour acceder à un state que je trouve dans ReWearContext
-  const { accesToken} = useContext(ReWearApiContext);
+  const { accesToken } = useContext(ReWearApiContext);
   console.log("in App function-> ", accesToken); //je logue l'accessToken, quand le state change dans le context, les composants qui l'utilisent ils se re-render avec la nouvelle valeur
   const cookies_token = new Cookies();
 
@@ -62,6 +63,7 @@ export default function App() {
             <Route exact path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/sell" element={<Sell />} />
+            <Route path="/user" element={<User />} />
             <Route
               path="*"
               element={
