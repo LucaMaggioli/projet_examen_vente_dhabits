@@ -2,6 +2,7 @@ import "./App.css";
 
 import { createTheme, ThemeProvider } from "@mui/material";
 import React from "react";
+
 import { useContext } from "react";
 import Accueil from "./Components/PageAccueil/Accueil";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -11,7 +12,9 @@ import {
   ReWearApiContext,
   ReWearApiContextProvider,
 } from "./Services/ReWearApiContext";
-import Sell from "./Components/Sell/Sell";
+
+import {SignUp} from "./Components/SignUp/SignUp";
+import {Sell} from "./Components/Sell/Sell";
 
 const theme = createTheme({
   palette: {
@@ -48,6 +51,7 @@ export default function App() {
           <Nav></Nav>
           <Routes>
             <Route exact path="/" element={<Accueil />} />
+            <Route exact path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/sell" element={<Sell />} />
             <Route

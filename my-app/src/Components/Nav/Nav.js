@@ -1,7 +1,10 @@
+
 import React, { useContext } from "react";
+
 import "./Nav.css";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
 
@@ -35,13 +38,13 @@ export default function Nav() {
           {loggedUser}
         </div>
 
-        {!loggedUser &&
-        <div id={"register"}>
+      {!loggedUser &&
+        <div id={"signup"}>
           <Button
             variant={"contained"}
             color={"secondary"}
             onClick={() => {
-              navigate("/singin");
+              navigate("/signup");
             }}
           >
             S'inscrire

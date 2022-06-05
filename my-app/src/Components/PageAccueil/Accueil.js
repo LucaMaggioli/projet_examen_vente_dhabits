@@ -1,3 +1,4 @@
+
 import React, { useContext } from "react";
 
 export default function Accueil() {
@@ -7,4 +8,5 @@ export default function Accueil() {
 
     </>
   );
+
 }
