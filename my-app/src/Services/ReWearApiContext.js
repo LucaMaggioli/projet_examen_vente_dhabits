@@ -20,9 +20,9 @@ const ReWearApiContextProvider = ({ children }) => {
 
   function logOut() {
     console.log("calling logout");
-    setLoggedUser("");
-    setAccessToken("");
-    setAccessCookie("");
+    setLoggedUser(null);
+    setAccessToken(null);
+    setAccessCookie(null);
     cookies_token.remove('jwt', { path: '/' });
   }
 
