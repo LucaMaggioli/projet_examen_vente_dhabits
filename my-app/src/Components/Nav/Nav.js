@@ -10,7 +10,7 @@ import { ReWearApiContext } from "../../Services/ReWearApiContext";
 
 export default function Nav() {
   let navigate = useNavigate();
-  const { loggedUser, logOut, accessCookie} = useContext(ReWearApiContext);
+  const { loggedUser, logOut} = useContext(ReWearApiContext);
 
 
   //render() {
