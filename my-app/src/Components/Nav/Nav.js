@@ -10,7 +10,7 @@ import { ReWearApiContext } from "../../Services/ReWearApiContext";
 
 export default function Nav() {
   let navigate = useNavigate();
-  const { loggedUser, logOut } = useContext(ReWearApiContext);
+  const { loggedUser, logOut, accessCookie} = useContext(ReWearApiContext);
 
   //render() {
   return (
@@ -33,32 +33,41 @@ export default function Nav() {
       </div>
 
       <div id={"nav_droite"}>
-
         <div id={"userName"}>
-          {loggedUser}
+            { loggedUser != null &&
+                <Button
+                    variant={"contained"}
+                    color={"secondary"}
+                    onClick={() => {
+                        navigate("/profil");
+                    }}
+                >
+                    {loggedUser}
+                </Button>
+            }
         </div>
 
-      {!loggedUser &&
-        <div id={"signup"}>
-          <Button
-            variant={"contained"}
-            color={"secondary"}
-            onClick={() => {
-              navigate("/signup");
-            }}
-          >
-            S'inscrire
-          </Button>
-        </div>
+        {loggedUser === null &&
+          <div id={"signup"}>
+            <Button
+                variant={"contained"}
+                color={"secondary"}
+                onClick={() => {
+                  navigate("/signup");
+                }}
+            >
+              S'inscrire
+            </Button>
+          </div>
         }
 
         <div id={"login"}>
           <Button
-            variant={"text"}
-            color={"background"}
-            onClick={
-              loggedUser === null ? () => navigate("/login") : () => logOut()
-            }
+              variant={"text"}
+              color={"background"}
+              onClick={
+                loggedUser === null ? () => navigate("/login") : () => logOut()
+              }
           >
             {loggedUser === null ? "login" : "logout"}
           </Button>
