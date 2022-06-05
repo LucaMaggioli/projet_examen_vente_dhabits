@@ -10,7 +10,7 @@ export function SignUp(props) {
     const [token, setToken] = useState("");
 
     //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-    const { accessToken, setAccessToken, setLoggedUser } =
+    const { accessToken, setAccessToken, setLoggedUser, logIn } =
         useContext(ReWearApiContext);
     console.log("in signup ->", accessToken);
 
@@ -69,11 +69,9 @@ export function SignUp(props) {
         //console.log(response.json());
         response.json().then((v) => {
             console.log(v.token);
-            // ceci est un state interne au composant, et en futur il sera jarté, il est la pour que tu comprenne la difference
-            setToken(v.token);
-            //j'ai accés au 'states' du context grace à la ligne 9 ou j'utilise ces states à partir du contexte
-            setAccessToken(v.token);
-            setLoggedUser(v.userName);
+
+            logIn(v.token, v.userName);
+
         });
         /*let responsejson = response.json().then((v) => {
           console.log(v);

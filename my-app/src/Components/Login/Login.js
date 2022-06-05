@@ -4,12 +4,10 @@ import { ReWearApiContext } from "../../Services/ReWearApiContext";
 export default function Login(props) {
   const [email, setEmail] = useState("space@mail.ch");
   const [password, setPassword] = useState("Sp4ceDOG.2019");
-  const [token, setToken] = useState("");
 
   //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-  const { accessToken, setAccessToken, setLoggedUser } =
+  const { accessToken, setAccessToken, setLoggedUser, logIn} =
     useContext(ReWearApiContext);
-  console.log("in login ->", accessToken);
 
   return (
     <>
@@ -19,10 +17,10 @@ export default function Login(props) {
       <label>Password</label>
       <input id="password" value={password} onChange={changePassword} />
       <button onClick={login}>LogIn</button>
-      <p>token: {token}</p>
+      <p>token: {accessToken}</p>
       <h3> Notes: </h3>
       <p>
-        The token is a state of the Login component(const [token, setToken] =
+        The token is a state of the Login component(const [accessToken, setAccessToken] =
         useState("")),
       </p>
       <p>
@@ -60,12 +58,11 @@ export default function Login(props) {
     */
     //console.log(response.json());
     response.json().then((v) => {
+
       console.log(v.token);
-      // ceci est un state interne au composant, et en futur il sera jarté, il est la pour que tu comprenne la difference
-      setToken(v.token);
-      //j'ai accés au 'states' du context grace à la ligne 9 ou j'utilise ces states à partir du contexte
-      setAccessToken(v.token);
-      setLoggedUser(v.userName);
+
+      logIn(v.token, v.userName);
+
     });
     /*let responsejson = response.json().then((v) => {
       console.log(v);
