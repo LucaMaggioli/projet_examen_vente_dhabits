@@ -19,6 +19,7 @@ export default function Nav() {
         <div id={"title"} onClick={() => navigate("/")}>
           ReWear.
         </div>
+
         <div id={"search"}>
           <img
             id={"loupe"}
@@ -27,7 +28,8 @@ export default function Nav() {
           />
           Recherche
         </div>
-        <div id={"sell"}>Vendre</div>
+
+        <div id={"sell"} onClick={() => navigate("/sell")}>Vendre</div>
       </div>
 
       <div id={"nav_droite"}>

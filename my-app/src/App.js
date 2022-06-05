@@ -2,7 +2,6 @@ import "./App.css";
 
 import { createTheme, ThemeProvider } from "@mui/material";
 import React from "react";
-import JwtDecode from 'jwt-decode'
 
 import { useContext } from "react";
 import Accueil from "./Components/PageAccueil/Accueil";
@@ -14,6 +13,7 @@ import {
   ReWearApiContextProvider,
 } from "./Services/ReWearApiContext";
 import {SignUp} from "./Components/SignUp/SignUp";
+import {Sell} from "./Components/Sell/Sell";
 import Cookies from "universal-cookie";
 
 
@@ -61,7 +61,7 @@ export default function App() {
             <Route exact path="/" element={<Accueil />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-
+            <Route path="/sell" element={<Sell />} />
             <Route
               path="*"
               element={
