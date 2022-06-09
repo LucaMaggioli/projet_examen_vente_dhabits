@@ -15,6 +15,7 @@ const ReWearApiContextProvider = ({ children }) => {
   const [accessCookie, setAccessCookie] = useState(null);
 
   const cookies_token = new Cookies();
+  const baseUrl = 'https://localhost:7175';
 
   let navigate = useNavigate();
 
@@ -37,9 +38,33 @@ const ReWearApiContextProvider = ({ children }) => {
     navigate("/");
   }
 
+  async function request(endpointUrl, method, body, token){
+    //      body===null?: body: JSON.stringify(body);
+    let requestOptions = {
+      method: method,
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify(body)
+    };
+    if(body === null){
+      requestOptions = {
+        method: method,
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+      }
+    }
+    return fetch(baseUrl + endpointUrl, requestOptions)
+        .then(response => {
+
+          return response.json()
+        })
+        .catch(error => {
+          console.log(error);
+          return error
+        });
+  }
+
   return (
     <ReWearApiContext.Provider
-      value={{ accessToken, setAccessToken, loggedUser, setLoggedUser, accessCookie, setAccessCookie, logOut, logIn}}
+      value={{ accessToken, setAccessToken, loggedUser, setLoggedUser, accessCookie, setAccessCookie, logOut, logIn, request}}
     >
       {children}
     </ReWearApiContext.Provider>

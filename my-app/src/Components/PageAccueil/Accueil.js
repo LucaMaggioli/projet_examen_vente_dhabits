@@ -1,8 +1,11 @@
-import React from "react";
-import API from "../../Utils/AxiosInstance";
+import React, {useContext, useState} from "react";
+import {ReWearApiContext} from "../../Services/ReWearApiContext";
 
 
 export default function Accueil() {
+    const [users, setUsers] = useState([]);
+    const { request, accessToken} =
+        useContext(ReWearApiContext);
 
     return (
     <>
@@ -12,20 +15,25 @@ export default function Accueil() {
 
         <p>
             <button onClick={async () => {
-                const response = await API.get('https://localhost:7175/User/all');
-                if (response.status === 200) {
-                    console.log(response.data)
-                } else if (response.statusText === 401) {
-                    console.log("Il faut vous connecter pour voir les utilisateurs")
-                }
-
+                let response = await request('/User/All', 'GET', null ,accessToken)
+                setUsers(response)
+                console.log(response)
             }}
             >
                 Test d'accès à user (regarder les log)
             </button>
         </p>
 
+        <div>
+            {users.length > 0 && (
+                <ul>
+                    {users.map(user => (
+                        <li key={user.userName}>{user.userName}</li>
+                    ))}
+                </ul>
+            )}
+        </div>
+
     </>
   );
-
 }

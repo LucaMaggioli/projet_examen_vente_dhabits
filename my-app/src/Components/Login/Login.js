@@ -14,7 +14,7 @@ export default function Login(props) {
   const cookies = new Cookies();
 
   //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-  const { accessToken, logIn, logOut} =
+  const { accessToken, logIn, logOut, request} =
     useContext(ReWearApiContext);
   console.log("in login ->", accessToken);
 
@@ -49,16 +49,24 @@ export default function Login(props) {
 
   async function login() {
 
-      const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
+      //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
+      let response = await request('/auth/Login', 'POST', {email: email, password: password})
 
-      if(response.status === 200){
-          logIn(response.data.token, response.data.userName);
-      } else if (response.statusText === 'Unauthorized'){
-          logOut();
-      }
+      logIn(response.token, response.userName);
 
-      console.log(response);
-      console.log(response.data);
+      console.log(response)
+      /*response.then(data=> {
+          console.log(data);
+      });*/
+
+      // if(response){
+      //     logIn(response.data.token, response.data.userName);
+      // } else if (response.statusText === 'Unauthorized'){
+      //     logOut();
+      // }
+      //
+      // console.log(response);
+      // console.log(response.data);
 
   }
 }
