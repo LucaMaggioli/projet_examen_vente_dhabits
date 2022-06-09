@@ -16,6 +16,7 @@ import {SignUp} from "./Components/SignUp/SignUp";
 import Sell from "./Components/Sell/Sell";
 import Cookies from "universal-cookie";
 import User from "./Components/User/User";
+import Profil from "./Components/Profil/Profil";
 
 
 const theme = createTheme({
@@ -64,6 +65,8 @@ export default function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/sell" element={<Sell />} />
             <Route path="/user" element={<User />} />
+            <Route path="/profil" element={<Profil />} />
+
             <Route
               path="*"
               element={

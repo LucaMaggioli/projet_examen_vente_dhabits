@@ -25,6 +25,8 @@ const ReWearApiContextProvider = ({ children }) => {
     setAccessToken(null);
     setAccessCookie(null);
     cookies_token.remove('jwt', { path: '/' });
+
+    navigate("/");
   }
 
   function logIn(token, username){
