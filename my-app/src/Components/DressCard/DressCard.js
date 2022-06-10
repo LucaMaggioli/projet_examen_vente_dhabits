@@ -14,9 +14,16 @@ const Img = styled('img')({
     maxHeight: '100%',
 });
 
+
 export default function DressCard(props) {
+
     DressCard.defaultProps = {
         image: 'https://decizia.com/blog/wp-content/uploads/2017/06/default-placeholder.png'
+    }
+
+    const onTrigger = (event) => {
+        props.parentCallback(JSON.stringify(props.dress));
+        event.preventDefault();
     }
 
     return (
@@ -52,7 +59,7 @@ export default function DressCard(props) {
                             </Typography>
                         </Grid>
                         <Grid item>
-                            <Button variant="outlined" href="#">
+                            <Button variant="outlined" href="" onClick={onTrigger}>
                                 Voir plus
                             </Button>
                             <IconButton aria-label="delete">
