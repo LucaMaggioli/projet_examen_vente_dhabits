@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-export default function ImgMediaCard( props) {
+export default function ImgMediaCard(props) {
     ImgMediaCard.defaultProps = {
         image: 'https://decizia.com/blog/wp-content/uploads/2017/06/default-placeholder.png'
     }

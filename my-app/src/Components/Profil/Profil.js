@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from "react";
 import {ReWearApiContext} from "../../Services/ReWearApiContext";
-import ImgMediaCard from "../ImgMediaCard/ImgMediaCard";
+import DressCard from "../DressCard/DressCard";
+import Grid from "@mui/material/Grid";
+
 
 export default function Profil() {
     const [dresses, setDresses] = useState([]);
@@ -10,7 +12,6 @@ export default function Profil() {
     useEffect(async () => {
         let response = await request('/User/me/dresses', 'GET', null, accessToken)
         setDresses(response)
-        console.log(response)
     }, []);
 
     return(
@@ -20,10 +21,17 @@ export default function Profil() {
 
             {dresses.length > 0 && (
                 <ul>
-                    {dresses.map(dress => (
-                        <ImgMediaCard name={dress.name} description={dress.description} price={dress.price}></ImgMediaCard>
-                        //<li key={dress.id}>{dress.name}</li>
-                    ))}
+                    <Grid container spacing={2} columns={16}>
+                        <Grid item xs={8}>
+                            {dresses.map(dress => (
+                                <DressCard name={dress.name} description={dress.description} price={dress.price}></DressCard>
+                            ))}
+                        </Grid>
+                        <Grid item xs={8}>
+                            Salut
+                        </Grid>
+                    </Grid>
+
                 </ul>
             )}
         </>
