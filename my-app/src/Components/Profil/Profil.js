@@ -26,8 +26,6 @@ export default function Profil() {
         console.log(childData);
     }
 
-
-
     return(
         <>
             <h1>Profil</h1>
@@ -53,7 +51,7 @@ export default function Profil() {
                                     <Grid item xs={6} md={12}>
                                         <CardMedia
                                             component="img"
-                                            height="140"
+                                            height="250"
                                             image={JSON.parse(selectedDress).image}
                                             alt="photo"
                                         />
