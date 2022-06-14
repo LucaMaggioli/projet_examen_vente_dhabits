@@ -5,7 +5,6 @@ import Grid from "@mui/material/Grid";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import DeleteIcon from '@mui/icons-material/Delete';
-import ModeIcon from '@mui/icons-material/Mode';
 import {Stack} from "@mui/material";
 
 export default function Profil() {
@@ -26,6 +25,13 @@ export default function Profil() {
         console.log(childData);
     }
 
+    const deleteDress = async (event) => {
+        console.log(accessToken);
+        if (window.confirm('Voulez vous vraiment supprimer l\'habit ?')) {
+            await request('/User/me/dress/' + JSON.stringify(event.target.id), "DELETE", null, accessToken);
+        }
+    };
+
     return(
         <>
             <h1>Profil</h1>
@@ -36,7 +42,7 @@ export default function Profil() {
                     <Grid container spacing={2} columns={16}>
                         <Grid item xs={8}>
                             {dresses.map(dress => (
-                                <DressCard dress={dress} id={dress.id} name={dress.name} description={dress.description} price={dress.price} parentCallback={handleCallback}></DressCard>
+                                <DressCard dress={dress} id={dress.id} name={dress.name} description={dress.description} price={dress.price} category={dress.price} imageUrl={dress.imageUrl !== "" ? dress.imageUrl: "https://decizia.com/blog/wp-content/uploads/2017/06/default-placeholder.png"} parentCallback={handleCallback}></DressCard>
                             ))}
                         </Grid>
                         <Grid item xs={8}>
@@ -46,31 +52,35 @@ export default function Profil() {
                                         <h1>{JSON.parse(selectedDress).name}</h1>
                                     </Grid>
                                     <Grid item xs={6} md={4}>
-                                        <h1>{JSON.parse(selectedDress).price} .-</h1>
+                                        <h2><i>{JSON.parse(selectedDress).price} .-</i></h2>
                                     </Grid>
                                     <Grid item xs={6} md={12}>
                                         <CardMedia
                                             component="img"
                                             height="250"
-                                            image={JSON.parse(selectedDress).image}
+                                            image={JSON.parse(selectedDress).imageUrl !== "" ? JSON.parse(selectedDress).imageUrl : "https://decizia.com/blog/wp-content/uploads/2017/06/default-placeholder.png"}
                                             alt="photo"
                                         />
                                     </Grid>
-                                    <Grid item xs={6} md={12}>
-                                        <h3>{JSON.parse(selectedDress).description}</h3>
-                                    </Grid>
                                     <Grid item xs={6} md={8}>
-                                        <h2>{JSON.parse(selectedDress).healthState}</h2>
+                                        <h3>Description: </h3>
+                                        {JSON.parse(selectedDress).description}
                                     </Grid>
                                     <Grid item xs={6} md={4}>
-                                        <h2>{JSON.parse(selectedDress).size}</h2>
+                                        <h3>Catégorie: </h3>
+                                        {JSON.parse(selectedDress).category}
+                                    </Grid>
+                                    <Grid item xs={6} md={8}>
+                                        <h3>État de l'habit: </h3>
+                                        {JSON.parse(selectedDress).healthState}
+                                    </Grid>
+                                    <Grid item xs={6} md={4}>
+                                        <h3>Taille: </h3>
+                                        {JSON.parse(selectedDress).size}
                                     </Grid>
                                     <Grid item xs={6} md={12}>
                                         <Stack direction="row" spacing={2}>
-                                            <Button variant="contained" endIcon={<ModeIcon />}>
-                                                Modifier
-                                            </Button>
-                                            <Button variant="outlined" startIcon={<DeleteIcon />}>
+                                            <Button onClick={deleteDress} id={JSON.parse(selectedDress).id} variant="contained" endIcon={<DeleteIcon />}>
                                                 Supprimer
                                             </Button>
                                         </Stack>
