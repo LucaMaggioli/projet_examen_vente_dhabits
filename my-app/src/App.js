@@ -2,7 +2,6 @@ import "./App.css";
 
 import { createTheme, ThemeProvider } from "@mui/material";
 import React from "react";
-import JwtDecode from "jwt-decode";
 import { useContext } from "react";
 import Accueil from "./Components/PageAccueil/Accueil";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -14,7 +13,6 @@ import {
 } from "./Services/ReWearApiContext";
 import {SignUp} from "./Components/SignUp/SignUp";
 import Sell from "./Components/Sell/Sell";
-import Cookies from "universal-cookie";
 import User from "./Components/User/User";
 import Profil from "./Components/Profil/Profil";
 
@@ -44,15 +42,10 @@ const theme = createTheme({
 
 export default function App() {
   //cette ligne pour acceder à un state que je trouve dans ReWearContext
-  const { accesToken } = useContext(ReWearApiContext);
+  const { accesToken} =
+      useContext(ReWearApiContext);
   console.log("in App function-> ", accesToken); //je logue l'accessToken, quand le state change dans le context, les composants qui l'utilisent ils se re-render avec la nouvelle valeur
-  const cookies_token = new Cookies();
 
-  const authToken = cookies_token.get('jwt', '/') ? cookies_token.get('jwt', '/') : null;
-  if(authToken){
-    const user = JwtDecode(authToken);
-    console.log(user);
-  }
 
   return (
     <ThemeProvider theme={theme}>

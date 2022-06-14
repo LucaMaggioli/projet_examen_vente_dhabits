@@ -1,6 +1,7 @@
-import { createContext, useState } from "react";
+import {createContext, useEffect, useState} from "react";
 import Cookies from 'universal-cookie';
 import { useNavigate } from "react-router-dom";
+import JwtDecode from "jwt-decode";
 
 // creation du contexte avec createContext qui est importé de React
 const ReWearApiContext = createContext({});
@@ -19,6 +20,16 @@ const ReWearApiContextProvider = ({ children }) => {
 
   let navigate = useNavigate();
 
+  useEffect(async () => {
+    const authToken = cookies_token.get('jwt', '/') ? cookies_token.get('jwt', '/') : null;
+    if(authToken){
+      const user = JwtDecode(authToken);
+      console.log(user);
+
+      logIn(authToken,user.Username.toString());
+    }
+  }, []);
+
   function logOut() {
     console.log("calling logout");
     setLoggedUser(null);
@@ -30,7 +41,6 @@ const ReWearApiContextProvider = ({ children }) => {
   }
 
   function logIn(token, username){
-
     cookies_token.set("jwt", token, { path: '/'})
 
     setAccessToken(token);
