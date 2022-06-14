@@ -14,12 +14,16 @@ export default function Profil() {
         useContext(ReWearApiContext);
 
     useEffect(async () => {
-        let response = await request('/User/me/dresses', 'GET', null, accessToken)
-        setDresses(response)
-        console.log(response);
+        await reloadDresses();
 
     }, []);
 
+    async function reloadDresses() {
+        let response = await request('/User/me/dresses', 'GET', null, accessToken)
+        setDresses(response)
+        setSelectedDress([]);
+        console.log(response);
+    }
     const handleCallback = (childData) =>{
         setSelectedDress(childData);
         console.log(childData);
@@ -28,7 +32,8 @@ export default function Profil() {
     const deleteDress = async (event) => {
         console.log(accessToken);
         if (window.confirm('Voulez vous vraiment supprimer l\'habit ?')) {
-            await request('/User/me/dress/' + JSON.stringify(event.target.id), "DELETE", null, accessToken);
+            await request('/User/me/dress/' + event.target.id, "DELETE", null, accessToken)
+            await reloadDresses();
         }
     };
 

@@ -54,13 +54,13 @@ const ReWearApiContextProvider = ({ children }) => {
     //      body===null?: body: JSON.stringify(body);
     let requestOptions = {
       method: method,
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, "Access-Control-Allow-Origin": "*"},
       body: JSON.stringify(body)
     };
     if(body === null){
       requestOptions = {
         method: method,
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token }
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, "Access-Control-Allow-Origin": "*"},
       }
     }
     return fetch(baseUrl + endpointUrl, requestOptions)

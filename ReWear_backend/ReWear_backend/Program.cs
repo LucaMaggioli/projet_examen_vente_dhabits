@@ -129,6 +129,7 @@ app.MapControllers();
 //To allow Cors
 app.UseCors(c =>  c
                 .AllowAnyOrigin()
+                .AllowAnyMethod()
                 .AllowAnyHeader()
                 );
 

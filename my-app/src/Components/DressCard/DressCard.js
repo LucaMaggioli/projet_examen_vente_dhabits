@@ -6,6 +6,9 @@ import Typography from '@mui/material/Typography';
 import ButtonBase from '@mui/material/ButtonBase';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {Button, IconButton} from "@mui/material";
+import {useContext, useEffect, useState} from "react";
+import {ReWearApiContext} from "../../Services/ReWearApiContext";
+import {useNavigate} from "react-router-dom";
 
 const Img = styled('img')({
     margin: 'auto',
@@ -14,12 +17,11 @@ const Img = styled('img')({
     maxHeight: '100%',
 });
 
-
 export default function DressCard(props) {
+    const [dresses, setDresses] = useState([]);
+    const { request, accessToken } =
+        useContext(ReWearApiContext);
 
-    DressCard.defaultProps = {
-        image: 'https://decizia.com/blog/wp-content/uploads/2017/06/default-placeholder.png'
-    }
 
     const onTrigger = (event) => {
         props.parentCallback(JSON.stringify(props.dress));
@@ -42,7 +44,7 @@ export default function DressCard(props) {
             <Grid container spacing={2}>
                 <Grid item>
                     <ButtonBase sx={{ width: 128, height: 128 }}>
-                        <Img alt="complex" src={props.image} />
+                        <Img alt="complex" src={props.imageUrl} />
                     </ButtonBase>
                 </Grid>
                 <Grid item xs={12} sm container>
@@ -62,9 +64,6 @@ export default function DressCard(props) {
                             <Button variant="outlined" href="" onClick={onTrigger}>
                                 Voir plus
                             </Button>
-                            <IconButton aria-label="delete">
-                                <DeleteIcon />
-                            </IconButton>
                         </Grid>
                     </Grid>
                     <Grid item>
