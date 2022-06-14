@@ -16,7 +16,7 @@ export default function Sell() {
         size: "",
     });
 
-    const { title, price, description, healthState, category, size } = formValue;
+    const { title, imageUrl, price, description, healthState, category, size } = formValue;
 
     const handleChange = async (event) => {
         const { name, value } = event.target;
@@ -27,7 +27,6 @@ export default function Sell() {
                 [name]: value,
             };
         });
-
     };
 
     const categoryChange = async (event) => {
@@ -65,6 +64,16 @@ export default function Sell() {
                 variant="filled"
                 name='title'
                 value={title}
+                onChange={handleChange}
+            />
+
+            <h3>Image (URL)</h3>
+            <TextField
+                id="outlined-basic"
+                label="Image (URL)"
+                variant="filled"
+                name='imageUrl'
+                value={imageUrl}
                 onChange={handleChange}
             />
 
@@ -126,11 +135,11 @@ export default function Sell() {
                     <h3>Taille</h3>
                     {standardSizeIsVisible !== true &&
                         <TextField
-                        type="number"
-                        label="Taille"
-                        name='size'
-                        value={size}
-                        onChange={handleChange}
+                            type="number"
+                            label="Taille"
+                            name='size'
+                            value={size}
+                            onChange={handleChange}
                         />
                     }
 

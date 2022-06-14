@@ -21,14 +21,14 @@ export default function Nav() {
           ReWear.
         </div>
 
-        <div id={"search"}>
-          <img
-            id={"loupe"}
-            src={require("../../assets/iconLoupeBlanc1.png")}
-            alt="loupe"
-          />
-          Recherche
-        </div>
+        {/*<div id={"search"}>*/}
+        {/*  <img*/}
+        {/*    id={"loupe"}*/}
+        {/*    src={require("../../assets/iconLoupeBlanc1.png")}*/}
+        {/*    alt="loupe"*/}
+        {/*  />*/}
+        {/*  Recherche*/}
+        {/*</div>*/}
 
         <div id={"sell"} onClick={() => navigate("/sell")}>Vendre</div>
       </div>
