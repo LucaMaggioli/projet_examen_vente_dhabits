@@ -88,7 +88,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy=> policy.RequireClaim("IsAdmin", "True")) ;
     options.AddPolicy("Max5DressesOrPremium", policy =>
-                policy.AddRequirements(new MaxDressOrPremiumRequirement(6)));
+                policy.AddRequirements(new MaxDressOrPremiumRequirement(5)));
     options.AddPolicy("PremiumOnly", policy =>
                 policy.AddRequirements(new IsPremiumRequirement()));
 });
