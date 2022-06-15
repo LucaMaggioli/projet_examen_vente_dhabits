@@ -14,6 +14,9 @@ const ReWearApiContextProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [loggedUser, setLoggedUser] = useState(null);
   const [accessCookie, setAccessCookie] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isPremium, setIsPremium] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const cookies_token = new Cookies();
   const baseUrl = "https://localhost:7175";
@@ -21,33 +24,64 @@ const ReWearApiContextProvider = ({ children }) => {
   let navigate = useNavigate();
 
   useEffect(async () => {
-    const authToken = cookies_token.get("jwt", "/")
-      ? cookies_token.get("jwt", "/")
-      : null;
-    if (authToken) {
-      const user = JwtDecode(authToken);
-      console.log(user);
 
-      logIn(authToken, user.Username.toString());
+    const authToken = cookies_token.get('jwt', '/') ? cookies_token.get('jwt', '/') : null;
+    if(authToken){
+
+      logIn(authToken);
+
     }
+
   }, []);
+
+  function padTo2Digits(num) {
+    return num.toString().padStart(2, '0');
+  }
+
+  function formatDate(date) {
+    return (
+        [
+          padTo2Digits(date.getMonth() + 1),
+          padTo2Digits(date.getDate()),
+          date.getFullYear(),
+        ].join('/') +
+        ' ' +
+        [
+          padTo2Digits(date.getHours()),
+          padTo2Digits(date.getMinutes()),
+          padTo2Digits(date.getSeconds()),
+        ].join(':')
+    );
+  }
 
   function logOut() {
     console.log("calling logout");
-    setLoggedUser(null);
     setAccessToken(null);
+    setLoggedUser(null);
     setAccessCookie(null);
-    cookies_token.remove("jwt", { path: "/" });
+
+    setIsAdmin(false);
+    setIsPremium(false);
+    setIsAuthenticated(false);
+
+    cookies_token.remove('jwt', { path: '/' });
 
     navigate("/");
   }
 
-  function logIn(token, username) {
-    cookies_token.set("jwt", token, { path: "/" });
+
+  function logIn(token){
+    const user = JwtDecode(token);
+    console.log(user);
+
+    cookies_token.set("jwt", token, { path: '/'})
 
     setAccessToken(token);
-    setLoggedUser(username);
+    setLoggedUser(user.Username.toString());
     setAccessCookie(cookies_token.get("jwt"));
+    setIsAdmin(user.IsAdmin.toString() === "True");
+    setIsPremium(formatDate(new Date(user.endPremiumDate)) > formatDate(new Date()))
+    setIsAuthenticated(true);
 
     navigate("/");
   }
@@ -112,6 +146,7 @@ const ReWearApiContextProvider = ({ children }) => {
         request,
         updateToken,
       }}
+
     >
       {children}
     </ReWearApiContext.Provider>

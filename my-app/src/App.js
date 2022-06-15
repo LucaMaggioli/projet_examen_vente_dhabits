@@ -13,9 +13,8 @@ import {
 } from "./Services/ReWearApiContext";
 import {SignUp} from "./Components/SignUp/SignUp";
 import Sell from "./Components/Sell/Sell";
-import User from "./Components/User/User";
 import Profil from "./Components/Profil/Profil";
-
+import Protected from "./Services/Protected";
 
 const theme = createTheme({
   palette: {
@@ -44,7 +43,8 @@ export default function App() {
   //cette ligne pour acceder à un state que je trouve dans ReWearContext
   const { accesToken} =
       useContext(ReWearApiContext);
-  console.log("in App function-> ", accesToken); //je logue l'accessToken, quand le state change dans le context, les composants qui l'utilisent ils se re-render avec la nouvelle valeur
+  console.log("in App function-> ", accesToken);
+  //je logue l'accessToken, quand le state change dans le context, les composants qui l'utilisent ils se re-render avec la nouvelle valeur
 
 
   return (
@@ -56,10 +56,22 @@ export default function App() {
             <Route exact path="/" element={<Accueil />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/sell" element={<Sell />} />
-            <Route path="/user" element={<User />} />
-            <Route path="/profil" element={<Profil />} />
-
+            <Route
+                path="/sell"
+                element={
+                  <Protected type={'user'}>
+                    <Sell />
+                  </Protected>
+                }
+            />
+            <Route
+                path="/profil"
+                element={
+                  <Protected type={'user'}>
+                    <Profil />
+                  </Protected>
+                }
+            />
             <Route
               path="*"
               element={
