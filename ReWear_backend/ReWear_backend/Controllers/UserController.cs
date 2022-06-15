@@ -20,6 +20,7 @@ namespace ReWear_backend.Controllers
         private readonly ReWearDataContext _reWearDataContext;
         private readonly UserService _userService;
         private readonly IAuthorizationService _authorizationService;
+        private readonly TokenManagerService _tokenManagerService;
 
 
         public UserController(
@@ -27,13 +28,15 @@ namespace ReWear_backend.Controllers
             IHttpContextAccessor httpContextAccessor,
             ReWearDataContext reWearDataContext,
             UserService userService,
-            IAuthorizationService authorizationService)
+            IAuthorizationService authorizationService,
+            TokenManagerService tokenManagerService)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _reWearDataContext = reWearDataContext;
             _userService = userService;
             _authorizationService = authorizationService;
+            _tokenManagerService = tokenManagerService;
         }
 
         [HttpGet("all")]
@@ -103,7 +106,8 @@ namespace ReWear_backend.Controllers
         }
 
         [HttpPost("me/dress")]
-        [Authorize(AuthenticationSchemes = "Bearer", Policy = "Max5DressesOrPremium")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Policy = "Max5DressesOrPremium")]
         public async Task<IActionResult> AddDressToUser([FromBody] DressDto DressToAddDto)
         {
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
@@ -119,7 +123,10 @@ namespace ReWear_backend.Controllers
 
             await _reWearDataContext.SaveChangesAsync();
 
-            return Ok(loggedUser.Dresses);
+            var newToken = await _tokenManagerService.GenerateJwtTokenFromIdentityUser(loggedUser);
+            var response = new AddDressResponse { Dresses = loggedUser.Dresses, Result = true, Token = newToken };
+
+            return Ok(response);
         }
 
         [HttpDelete("me/dress/{id}")]
@@ -139,7 +146,11 @@ namespace ReWear_backend.Controllers
             loggedUser.Dresses.Remove(dressToDelete);
             await _reWearDataContext.SaveChangesAsync();
 
-            return Ok(String.Format("Dress with Id '{0}' deleted", id));
+            var newToken = await _tokenManagerService.GenerateJwtTokenFromIdentityUser(loggedUser);
+            var response = new DeleteDressResponse { DeletedDress = dressToDelete, Result = true, Token = newToken };
+
+            //return Ok(String.Format("Dress with Id '{0}' deleted", id));
+            return Ok(response);
         }
     }
 }

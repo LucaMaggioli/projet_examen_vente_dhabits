@@ -1,5 +1,5 @@
-import {createContext, useEffect, useState} from "react";
-import Cookies from 'universal-cookie';
+import { createContext, useEffect, useState } from "react";
+import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import JwtDecode from "jwt-decode";
 
@@ -19,7 +19,7 @@ const ReWearApiContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const cookies_token = new Cookies();
-  const baseUrl = 'https://localhost:7175';
+  const baseUrl = "https://localhost:7175";
 
   let navigate = useNavigate();
 
@@ -59,6 +59,7 @@ const ReWearApiContextProvider = ({ children }) => {
     setAccessToken(null);
     setLoggedUser(null);
     setAccessCookie(null);
+
     setIsAdmin(false);
     setIsPremium(false);
     setIsAuthenticated(false);
@@ -67,6 +68,7 @@ const ReWearApiContextProvider = ({ children }) => {
 
     navigate("/");
   }
+
 
   function logIn(token){
     const user = JwtDecode(token);
@@ -83,34 +85,68 @@ const ReWearApiContextProvider = ({ children }) => {
 
     navigate("/");
   }
+  function updateToken(token) {
+    setAccessToken(token);
+    cookies_token.set("jwt", token, { path: "/" });
+    setAccessCookie(cookies_token.get("jwt"));
+  }
 
-  async function request(endpointUrl, method, body, token){
+  async function request(endpointUrl, method, body, token) {
     //      body===null?: body: JSON.stringify(body);
     let requestOptions = {
       method: method,
-      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, "Access-Control-Allow-Origin": "*"},
-      body: JSON.stringify(body)
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify(body),
     };
-    if(body === null){
+    if (body === null) {
       requestOptions = {
         method: method,
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, "Access-Control-Allow-Origin": "*"},
-      }
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+          "Access-Control-Allow-Origin": "*",
+        },
+      };
     }
-    return fetch(baseUrl + endpointUrl, requestOptions)
-        .then(response => {
-
-          return response.json()
-        })
-        .catch(error => {
-          console.log(error);
-          return error
+    return fetch(baseUrl + endpointUrl, requestOptions).then((response) => {
+      console.log("response in request method");
+      console.log(response);
+      if (response.status === 403) {
+        return Promise.reject({
+          message: "You don't have the right to perform this action",
+          status: response.status,
         });
+      } else if (response.status === 401) {
+        console.log("unathorized in request");
+        return Promise.reject({
+          message: "Please log in to access the api",
+          status: response.status,
+        });
+      } else {
+        return response.json();
+      }
+    });
   }
 
   return (
     <ReWearApiContext.Provider
-      value={{ accessToken, setAccessToken, loggedUser, setLoggedUser, accessCookie, setAccessCookie, isAdmin, isPremium, isAuthenticated,logOut, logIn, request}}
+      value={{
+        accessToken,
+        setAccessToken,
+        loggedUser,
+        setLoggedUser,
+        accessCookie,
+        setAccessCookie,
+        logOut,
+        logIn,
+        request,
+        updateToken,
+      }}
+
     >
       {children}
     </ReWearApiContext.Provider>

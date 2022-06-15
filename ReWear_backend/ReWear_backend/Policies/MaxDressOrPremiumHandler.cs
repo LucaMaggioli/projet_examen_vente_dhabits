@@ -6,19 +6,30 @@ namespace ReWear_backend.Policies
     {
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MaxDressOrPremiumRequirement requirement)
         {
-            var userId = context.User.Claims.First(i => i.Type == "Id").Value;
-            var endPremiumDate = DateTime.Parse(context.User.Claims.First(c => c.Type == "endPremiumDate").Value);
-
-            if (Int32.TryParse(context.User.Claims.First(i => i.Type == "dressesCount").Value, out int userDressesCount))
+            //if(context.User.Claims == 0)
+            //{
+            //    return Task.CompletedTask;
+            //}
+            try
             {
-                if (userDressesCount < requirement.MaxDresses)
+                var userId = context.User.Claims.First(i => i.Type == "Id").Value;
+                var endPremiumDate = DateTime.Parse(context.User.Claims.First(c => c.Type == "endPremiumDate").Value);
+
+                if (Int32.TryParse(context.User.Claims.First(i => i.Type == "dressesCount").Value, out int userDressesCount))
                 {
-                    context.Succeed(requirement);
+                    if (userDressesCount < requirement.MaxDresses)
+                    {
+                        context.Succeed(requirement);
+                    }
+                    else if (endPremiumDate >= DateTime.Now)
+                    {
+                        context.Succeed(requirement);
+                    }
                 }
-                else if (endPremiumDate >= DateTime.Now)
-                {
-                    context.Succeed(requirement);
-                }
+            }
+            catch
+            {
+
             }
             return Task.CompletedTask;
         }
