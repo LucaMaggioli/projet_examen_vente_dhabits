@@ -16,6 +16,7 @@ const ReWearApiContextProvider = ({ children }) => {
   const [accessCookie, setAccessCookie] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const cookies_token = new Cookies();
   const baseUrl = 'https://localhost:7175';
@@ -55,9 +56,13 @@ const ReWearApiContextProvider = ({ children }) => {
 
   function logOut() {
     console.log("calling logout");
-    setLoggedUser(null);
     setAccessToken(null);
+    setLoggedUser(null);
     setAccessCookie(null);
+    setIsAdmin(false);
+    setIsPremium(false);
+    setIsAuthenticated(false);
+
     cookies_token.remove('jwt', { path: '/' });
 
     navigate("/");
@@ -72,9 +77,9 @@ const ReWearApiContextProvider = ({ children }) => {
     setAccessToken(token);
     setLoggedUser(user.Username.toString());
     setAccessCookie(cookies_token.get("jwt"));
-
     setIsAdmin(user.IsAdmin.toString() === "True");
     setIsPremium(formatDate(new Date(user.endPremiumDate)) > formatDate(new Date()))
+    setIsAuthenticated(true);
 
     navigate("/");
   }
@@ -105,7 +110,7 @@ const ReWearApiContextProvider = ({ children }) => {
 
   return (
     <ReWearApiContext.Provider
-      value={{ accessToken, setAccessToken, loggedUser, setLoggedUser, accessCookie, setAccessCookie, isAdmin, isPremium, logOut, logIn, request}}
+      value={{ accessToken, setAccessToken, loggedUser, setLoggedUser, accessCookie, setAccessCookie, isAdmin, isPremium, isAuthenticated,logOut, logIn, request}}
     >
       {children}
     </ReWearApiContext.Provider>

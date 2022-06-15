@@ -4,7 +4,7 @@ import {ReWearApiContext} from "../../Services/ReWearApiContext";
 
 export default function Accueil() {
     const [users, setUsers] = useState([]);
-    const { request, accessToken, isAdmin, isPremium} =
+    const { request, accessToken, isAdmin, isPremium, isAuthenticated} =
         useContext(ReWearApiContext);
 
     return (
@@ -26,6 +26,7 @@ export default function Accueil() {
             <button onClick={async () => {
                 console.log("isAdmin: " + isAdmin)
                 console.log("isPremium: " + isPremium)
+                console.log("isAuthenticated: " + isAuthenticated)
             }}
             >
                 Test State
