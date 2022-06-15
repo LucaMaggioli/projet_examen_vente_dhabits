@@ -2,3 +2,6 @@
 .vs/*
 obj
 bin
+ReWear_backend\ReWear_backend\ReWear.db
+ReWear_backend\ReWear_backend\ReWear.db-shm
+ReWear_backend\ReWear_backend\ReWear.db-wal
