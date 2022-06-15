@@ -8,8 +8,7 @@ const Protected = ({type, children}) => {
 
     if (type === 'user'){
         if (!isAuthenticated) {
-            alert('Vous n\'êtes pas connecté');
-            return <Navigate to="/" replace/>;
+            return <Navigate to="/"/>;
         }
         return children;
 

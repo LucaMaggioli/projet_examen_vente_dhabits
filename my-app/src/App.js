@@ -56,7 +56,6 @@ export default function App() {
             <Route exact path="/" element={<Accueil />} />
             <Route exact path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
-
             <Route
                 path="/sell"
                 element={
@@ -65,7 +64,6 @@ export default function App() {
                   </Protected>
                 }
             />
-
             <Route
                 path="/profil"
                 element={
@@ -74,7 +72,6 @@ export default function App() {
                   </Protected>
                 }
             />
-
             <Route
               path="*"
               element={
