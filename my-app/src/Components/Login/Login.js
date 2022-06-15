@@ -42,7 +42,7 @@ export default function Login(props) {
       //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
       let response = await request('/auth/Login', 'POST', {email: email, password: password})
 
-      logIn(response.token, response.userName);
+      logIn(response.token);
 
       console.log(response)
       /*response.then(data=> {
