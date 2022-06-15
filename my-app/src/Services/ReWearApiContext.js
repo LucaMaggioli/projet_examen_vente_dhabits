@@ -145,6 +145,9 @@ const ReWearApiContextProvider = ({ children }) => {
         logIn,
         request,
         updateToken,
+        isAdmin,
+        isPremium,
+        isAuthenticated
       }}
 
     >
