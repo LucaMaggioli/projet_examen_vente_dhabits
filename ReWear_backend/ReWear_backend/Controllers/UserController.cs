@@ -106,7 +106,8 @@ namespace ReWear_backend.Controllers
         }
 
         [HttpPost("me/dress")]
-        [Authorize(AuthenticationSchemes = "Bearer", Policy = "Max5DressesOrPremium")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Policy = "Max5DressesOrPremium")]
         public async Task<IActionResult> AddDressToUser([FromBody] DressDto DressToAddDto)
         {
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
