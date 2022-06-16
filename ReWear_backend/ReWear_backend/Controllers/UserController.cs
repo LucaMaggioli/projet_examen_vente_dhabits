@@ -20,6 +20,7 @@ namespace ReWear_backend.Controllers
         private readonly ReWearDataContext _reWearDataContext;
         private readonly UserService _userService;
         private readonly IAuthorizationService _authorizationService;
+        private readonly TokenManagerService _tokenManagerService;
 
 
         public UserController(
@@ -27,21 +28,23 @@ namespace ReWear_backend.Controllers
             IHttpContextAccessor httpContextAccessor,
             ReWearDataContext reWearDataContext,
             UserService userService,
-            IAuthorizationService authorizationService)
+            IAuthorizationService authorizationService,
+            TokenManagerService tokenManagerService)
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _reWearDataContext = reWearDataContext;
             _userService = userService;
             _authorizationService = authorizationService;
+            _tokenManagerService = tokenManagerService;
         }
 
         [HttpGet("all")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public List<UserDto> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var usersNames = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.EndPremiumDate > DateTime.Now}).ToList();
-            return usersNames;
+            var users = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.EndPremiumDate > DateTime.Now, IsAdmin = u.IsAdmin}).ToList();
+            return Ok(users);
         }
 
 
@@ -55,10 +58,10 @@ namespace ReWear_backend.Controllers
             user.IsAdmin = isAdmin;
 
             var updated = await _userManager.UpdateAsync(user);
-
+            
             //if the user that is updated is the logged user, I should return His new token with updated IsAdmin claim
 
-            if (updated.Succeeded) { return Ok(updated); }
+            if (updated.Succeeded) { return Ok(new UserDto { IsAdmin=user.IsAdmin, IsPremium=user.EndPremiumDate>DateTime.Now, UserName=user.UserName}); }
             else { return BadRequest(updated); }
         }
 
@@ -103,7 +106,8 @@ namespace ReWear_backend.Controllers
         }
 
         [HttpPost("me/dress")]
-        [Authorize(AuthenticationSchemes = "Bearer", Policy = "Max5DressesOrPremium")]
+        [Authorize(AuthenticationSchemes = "Bearer")]
+        [Authorize(Policy = "Max5DressesOrPremium")]
         public async Task<IActionResult> AddDressToUser([FromBody] DressDto DressToAddDto)
         {
             var userId = _httpContextAccessor.HttpContext.User.Claims.First(i => i.Type == "Id").Value;
@@ -119,7 +123,10 @@ namespace ReWear_backend.Controllers
 
             await _reWearDataContext.SaveChangesAsync();
 
-            return Ok(loggedUser.Dresses);
+            var newToken = await _tokenManagerService.GenerateJwtTokenFromIdentityUser(loggedUser);
+            var response = new AddDressResponse { Dresses = loggedUser.Dresses, Result = true, Token = newToken };
+
+            return Ok(response);
         }
 
         [HttpDelete("me/dress/{id}")]
@@ -139,7 +146,11 @@ namespace ReWear_backend.Controllers
             loggedUser.Dresses.Remove(dressToDelete);
             await _reWearDataContext.SaveChangesAsync();
 
-            return Ok(String.Format("Dress with Id '{0}' deleted", id));
+            var newToken = await _tokenManagerService.GenerateJwtTokenFromIdentityUser(loggedUser);
+            var response = new DeleteDressResponse { DeletedDress = dressToDelete, Result = true, Token = newToken };
+
+            //return Ok(String.Format("Dress with Id '{0}' deleted", id));
+            return Ok(response);
         }
     }
 }

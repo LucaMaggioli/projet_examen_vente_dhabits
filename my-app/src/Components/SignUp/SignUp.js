@@ -1,17 +1,15 @@
 import React, { useState, useContext } from "react";
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
-import API from "../../Utils/AxiosInstance";
 
 
-
-export function SignUp(props) {
+export function SignUp() {
     const [name, setName] = useState("rewear");
     const [email, setEmail] = useState("rewear@mail.ch");
     const [password, setPassword] = useState("ReW34r.2022");
-    const [token, setToken] = useState("");
+    const [responseMessage, setResponseMessage] = useState("");
 
     //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-    const { accessToken, logIn, logOut } =
+    const { accessToken, logIn, request } =
         useContext(ReWearApiContext);
     console.log("in signup ->", accessToken);
 
@@ -25,17 +23,20 @@ export function SignUp(props) {
             <label>Password</label>
             <input id="password" value={password} onChange={changePassword} />
             <button onClick={signUp}>SignUp</button>
-            <p>token: {token}</p>
-            <h3> Notes: </h3>
             <p>
-                The token is a state of the SignUp component(const [token, setToken] =
-                useState("")),
+                {responseMessage}
             </p>
-            <p>
-                {" "}
-                but we can access the state of ReWearApiContext -> const -accessToken,
-                setAccessToken- = useContext(ReWearApiContext)
-            </p>
+            {/*<p>token: {token}</p>*/}
+            {/*<h3> Notes: </h3>*/}
+            {/*<p>*/}
+            {/*    The token is a state of the SignUp component(const [token, setToken] =*/}
+            {/*    useState("")),*/}
+            {/*</p>*/}
+            {/*<p>*/}
+            {/*    {" "}*/}
+            {/*    but we can access the state of ReWearApiContext -> const -accessToken,*/}
+            {/*    setAccessToken- = useContext(ReWearApiContext)*/}
+            {/*</p>*/}
         </>
     );
 
@@ -52,16 +53,13 @@ export function SignUp(props) {
     //ici la méthode qui éffectue l'appel à l'api avec 'fetch()' et qui va sauver dans le contexte la valeur du token et username
     async function signUp() {
 
-        const response = await API.post('https://localhost:7175/auth/Register', { name: name, email: email, password: password });
-
-        if(response.status === 200){
-            logIn(response.data.token, name);
-        } else if (response.statusText === 'Unauthorized'){
-            logOut();
-        }
+        let response = await request('/auth/Register', 'POST', {name: name, email: email, password: password})
 
         console.log(response);
         console.log(response.data);
+        setResponseMessage(response.message);
+
+        logIn(response.token);
 
     }
 }

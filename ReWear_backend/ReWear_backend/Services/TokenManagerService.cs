@@ -41,7 +41,8 @@ namespace ReWear_backend.Services
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 }),
 
-                Expires = DateTime.UtcNow.AddHours(6),
+                //Expires = DateTime.UtcNow.AddHours(6),
+                Expires = DateTime.UtcNow.AddMinutes(30),
                 // ici, nous ajoutons l'information sur l'algorithme de cryptage qui sera utilisé pour décrypter notre token.
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
