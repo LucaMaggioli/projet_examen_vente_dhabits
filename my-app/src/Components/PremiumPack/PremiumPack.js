@@ -41,8 +41,6 @@ export default function PremiumPack(props) {
   }
 
   function modifyPack() {
-    console.log("Modify AHAHHA premiumPack");
-    console.log(premiumPack);
     if (!priceValid) {
       window.alert("Price must be a float number");
     }
@@ -58,6 +56,24 @@ export default function PremiumPack(props) {
       });
     }
   }
+  function addPack() {
+    if (!priceValid) {
+      window.alert("Price must be a float number");
+    }
+    if (!validityValid) {
+      window.alert("Validity Days must be an integer number");
+    }
+    if (packName === "") {
+      window.alert("Name must not be empty");
+    }
+    if (priceValid && validityValid && packName !== "") {
+      props.onAddPack({
+        name: packName,
+        price: packPrice,
+        validityDays: packValidDays,
+      });
+    }
+  }
 
   return (
     <div
@@ -65,15 +81,19 @@ export default function PremiumPack(props) {
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-around",
+        margin: "1em",
       }}
     >
-      <TextField
-        id="outlined-basic"
-        label="Id"
-        variant="outlined"
-        value={premiumPack.id}
-        disabled={true}
-      />
+      {!props.addMode && (
+        <TextField
+          id="outlined-basic"
+          label="Id"
+          variant="outlined"
+          value={premiumPack.id}
+          disabled={true}
+        />
+      )}
+
       <TextField
         id="outlined-basic"
         label="name"
@@ -97,17 +117,26 @@ export default function PremiumPack(props) {
         onChange={changeValidityDays}
         error={!validityValid}
       />
-      <Button
-        variant="outlined"
-        color="warning"
-        type="submit"
-        onClick={modifyPack}
-      >
-        Modify
-      </Button>
-      <Button variant="outlined" color="error">
-        Delete
-      </Button>
+      {!props.addMode && (
+        <Button
+          variant="outlined"
+          color="warning"
+          type="submit"
+          onClick={modifyPack}
+        >
+          Modify
+        </Button>
+      )}
+      {!props.addMode && (
+        <Button variant="outlined" color="error">
+          Delete
+        </Button>
+      )}
+      {props.addMode && (
+        <Button variant="outlined" color="primary" onClick={addPack}>
+          New Pack
+        </Button>
+      )}
     </div>
   );
 }

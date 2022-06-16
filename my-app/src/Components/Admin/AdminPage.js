@@ -37,9 +37,29 @@ export default function AdminPage() {
       console.log(addedPack);
     });
   }
+  function addPack(pack) {
+    console.log(pack);
+    request(
+      "/PremiumPack/add",
+      "POST",
+      { name: pack.name, price: pack.price, validityDays: pack.validityDays },
+      accessToken
+    ).then((addedPack) => {
+      console.log(addedPack);
+      setPremiumPacks([...premiumPacks, addedPack]);
+      console.log(premiumPacks);
+    });
+  }
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gridGap: "2em",
+      }}
+    >
       <h2>Admin Page</h2>
       <div>
         {premiumPacks.map((element) => {
@@ -51,8 +71,17 @@ export default function AdminPage() {
             ></PremiumPack>
           );
         })}
-        ;
       </div>
-    </>
+      <div>
+        <PremiumPack
+          pack={{ id: "", name: "", price: "", validityDays: "" }}
+          addMode={true}
+          onAddPack={addPack}
+        ></PremiumPack>
+        <Button variant="outlined" color="success">
+          New Pack
+        </Button>
+      </div>
+    </div>
   );
 }
