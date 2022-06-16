@@ -4,29 +4,34 @@ import { ReWearApiContext } from "../../Services/ReWearApiContext";
 export default function Login(props) {
   const [email, setEmail] = useState("space@mail.ch");
   const [password, setPassword] = useState("Sp4ceDOG.2019");
+  const [responseMessage, setResponseMessage] = useState();
 
-  //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-  const { accessToken, logIn, request} =
+
+    //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
+  const { logIn, request} =
     useContext(ReWearApiContext);
   return (
     <>
-      <h1>Hello, {props.name}</h1>
+      <h1>Hello {props.name}</h1>
       <label>Email</label>
       <input id="email" value={email} onChange={changeMail} />
       <label>Password</label>
       <input id="password" value={password} onChange={changePassword} />
       <button onClick={login}>LogIn</button>
-      <p>token: {accessToken}</p>
-      <h3> Notes: </h3>
-      <p>
-        The token is a state of the Login component(const [accessToken, setAccessToken] =
-        useState("")),
-      </p>
-      <p>
-        {" "}
-        but we can access the state of ReWearApiContext -> const -accessToken,
-        setAccessToken- = useContext(ReWearApiContext)
-      </p>
+        <p>
+            {responseMessage}
+        </p>
+      {/*<p>token: {accessToken}</p>*/}
+      {/*<h3> Notes: </h3>*/}
+      {/*<p>*/}
+      {/*  The token is a state of the Login component(const [accessToken, setAccessToken] =*/}
+      {/*  useState("")),*/}
+      {/*</p>*/}
+      {/*<p>*/}
+      {/*  {" "}*/}
+      {/*  but we can access the state of ReWearApiContext -> const -accessToken,*/}
+      {/*  setAccessToken- = useContext(ReWearApiContext)*/}
+      {/*</p>*/}
     </>
   );
 
@@ -41,10 +46,14 @@ export default function Login(props) {
 
       //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
       let response = await request('/auth/Login', 'POST', {email: email, password: password})
+      console.log(response);
+      console.log(response.data);
+      console.log(response.token);
+      console.log(response.message);
+      setResponseMessage(response.message);
 
       logIn(response.token);
 
-      console.log(response)
       /*response.then(data=> {
           console.log(data);
       });*/
