@@ -120,9 +120,11 @@ export default function Accueil() {
         })}
       </div>
       <div>
-        <h3>Dressing</h3>
-        {selectedUserDresses.length < 1 &&
-          selectedUser !== null(<p>L'User n'a pas d'habits en vente</p>)}
+        {selectedUserDresses.length < 1 && selectedUser !== null && (
+          <p>L'User n'a pas d'habits en vente</p>
+        )}
+
+        {selectedUserDresses.length > 0 && <h3>Dressing</h3>}
 
         {selectedUserDresses.map((dress) => {
           return (
