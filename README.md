@@ -10,35 +10,20 @@ Techno:
 Concept:
 
 - particuliers a particuliers
-- les friperies pourraient s’inscrire dessus
-- Chaque particulier peut créer des dressings avec un certains nombres de cintres
-
-Contenu:
-
-- page abonnement
-- page recherche personnalisée
-- interface pensée pour le smartphone, geste, etc
-- système de swipe pour défiler à travers “le dressing”, affichage de cintre ça peut être marrant
-- messagerie in-app
+- App de revent d'habits
 
 Premium:
 
 - payer pour être mis en avant
 - Différents abonnement
     - Gratuit: accès aux habits, vente de 5 produits max
-    - Payant: achat unique pour un nombre défini de produits
-    - Magasin/Business: abonnement par mois, produits illimités
-- payement par twint
+    - Payant: achat pour un nombre infini d'habits
 
-Notes:
+POUR LANCER L'APPLICATION:
 - Pour lancer l'application React:
   - aller dans le repertoire 'projet_examen_vente_dhabits/my-app'
   - lancer la commande 'npm install'
   - puis 'npm run start'
-
-REMARQUE:
-- Il y a malheureusement pas mal de chose bugé par manque de temps, notamment avec les token en cookie, parfois pour corriger il suffit de refresh la page)
-- les seules fonctionnalités dispo dans le front sont le login, le register, et l'affichage des user dans la console
 
 - pour lancer l'application backend:
     - aller dans le repertoire `projet_examen_vente_dhabits/ReWear_backend/ReWear_backend`
