@@ -1,26 +1,33 @@
 import React, { useContext, useState, useEffect } from "react";
-import { MenuItem, Select, TextField } from "@mui/material";
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
-import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import PremiumPack from "../PremiumPack/PremiumPack";
 
 export default function AdminPage() {
   const [premiumPacks, setPremiumPacks] = useState([]);
-  const { accessToken, request, updateToken } = useContext(ReWearApiContext);
+  const [users, setUsers] = useState([]);
+  const { accessToken, request, updateToken, loggedUser } =
+    useContext(ReWearApiContext);
 
-  useEffect(async () => {
+  useEffect(() => {
     // async function callData() {
-    await getPremiumPacks();
+    getPremiumPacks();
+    getUsers();
     // }
     // callData();
   }, []);
+  console.log("users at render");
+  console.log(users);
 
-  async function getPremiumPacks() {
-    await request("/PremiumPack/all", "GET", null, accessToken)
+  function getUsers() {
+    request("/User/all", "GET", null, accessToken).then((getUsers) => {
+      setUsers(getUsers);
+    });
+  }
+
+  function getPremiumPacks() {
+    request("/PremiumPack/all", "GET", null, accessToken)
       .then((premiumPacks) => {
-        console.log("after request");
-        console.log(premiumPacks);
         setPremiumPacks(premiumPacks);
       })
       .catch((error) => {
@@ -35,14 +42,12 @@ export default function AdminPage() {
       accessToken
     ).then((addedPack) => {
       window.alert("Succesfully modified premium pack");
-      console.log(addedPack);
     });
   }
 
   function deletePack(packId) {
     request("/PremiumPack/" + packId, "DELETE", null, accessToken).then(
       (deletedPack) => {
-        console.log(deletedPack);
         premiumPacks.map((pack) => {
           if (pack.id === packId) {
             window.alert("Succesfully removed premium pack");
@@ -56,7 +61,6 @@ export default function AdminPage() {
   }
 
   function addPack(pack) {
-    console.log(pack);
     request(
       "/PremiumPack/add",
       "POST",
@@ -65,8 +69,36 @@ export default function AdminPage() {
     ).then((addedPack) => {
       window.alert("Succesfully added premium pack");
       setPremiumPacks([...premiumPacks, addedPack]);
-      console.log(premiumPacks);
     });
+  }
+
+  function adminChange(user) {
+    if (user.userName === loggedUser) {
+      alert("you cant modify your own admin status!");
+    } else {
+      request(
+        "/User/" + user.userName + "/upgradeToAdmin",
+        "PATCH",
+        !user.isAdmin,
+        accessToken
+      ).then((updatedUser) => {
+        window.alert(
+          "Succesfully Admin status modified " +
+            updatedUser.isAdmin +
+            " for user: " +
+            updatedUser.userName
+        );
+        let prevUsers = [...users];
+        let index = -1;
+        prevUsers.map((u) => {
+          if (u.userName === updatedUser.userName) {
+            index = prevUsers.indexOf(u);
+          }
+        });
+        prevUsers.splice(index, 1, updatedUser);
+        setUsers(prevUsers);
+      });
+    }
   }
 
   return (
@@ -79,6 +111,41 @@ export default function AdminPage() {
       }}
     >
       <h2>Admin Page</h2>
+      <div style={{ display: "flex", flexDirection: "row", gridGap: "1em" }}>
+        {users.map((user) => {
+          return (
+            <div
+              key={user.userName}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gridGap: "4px",
+                alignItems: "center",
+              }}
+            >
+              {user.userName}
+              {user.isAdmin && (
+                <Button
+                  color="error"
+                  variant="contained"
+                  onClick={() => adminChange(user)}
+                >
+                  un-admin
+                </Button>
+              )}
+              {!user.isAdmin && (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => adminChange(user)}
+                >
+                  up-admin
+                </Button>
+              )}
+            </div>
+          );
+        })}
+      </div>
       <div>
         {premiumPacks.map((element) => {
           return (

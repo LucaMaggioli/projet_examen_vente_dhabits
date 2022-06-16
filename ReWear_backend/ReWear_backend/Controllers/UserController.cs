@@ -41,10 +41,10 @@ namespace ReWear_backend.Controllers
 
         [HttpGet("all")]
         [Authorize(AuthenticationSchemes = "Bearer")]
-        public List<UserDto> GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var usersNames = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.EndPremiumDate > DateTime.Now}).ToList();
-            return usersNames;
+            var users = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.EndPremiumDate > DateTime.Now, IsAdmin = u.IsAdmin}).ToList();
+            return Ok(users);
         }
 
 
@@ -58,10 +58,10 @@ namespace ReWear_backend.Controllers
             user.IsAdmin = isAdmin;
 
             var updated = await _userManager.UpdateAsync(user);
-
+            
             //if the user that is updated is the logged user, I should return His new token with updated IsAdmin claim
 
-            if (updated.Succeeded) { return Ok(updated); }
+            if (updated.Succeeded) { return Ok(new UserDto { IsAdmin=user.IsAdmin, IsPremium=user.EndPremiumDate>DateTime.Now, UserName=user.UserName}); }
             else { return BadRequest(updated); }
         }
 

@@ -4,7 +4,6 @@ import Button from "@mui/material/Button";
 
 export default function PremiumPack(props) {
   const [premiumPack, setPremiumPack] = useState(props.pack);
-  console.log(premiumPack);
   const [packName, setPackName] = useState(premiumPack.name);
   const [packPrice, setPackPrice] = useState(premiumPack.price);
   const [packValidDays, setPackValidDays] = useState(premiumPack.validityDays);
