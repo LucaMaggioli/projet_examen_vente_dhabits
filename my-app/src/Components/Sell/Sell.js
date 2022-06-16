@@ -105,8 +105,6 @@ export default function Sell() {
 
   return (
     <>
-      <h3>En développement</h3>
-
       <div
         style={{
           display: "flex",

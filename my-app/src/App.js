@@ -15,7 +15,9 @@ import { SignUp } from "./Components/SignUp/SignUp";
 import Sell from "./Components/Sell/Sell";
 import Profil from "./Components/Profil/Profil";
 import Protected from "./Services/Protected";
+import PremiumPage from "./Components/PremiumPage/PremiumPage";
 import AdminPage from "./Components/Admin/AdminPage";
+
 
 const theme = createTheme({
   palette: {
@@ -42,8 +44,11 @@ const theme = createTheme({
 
 export default function App() {
   //cette ligne pour acceder à un state que je trouve dans ReWearContext
-  // const { accesToken } = useContext(ReWearApiContext);
-  // console.log("in App function-> ", accesToken);
+
+  const { accesToken } =
+      useContext(ReWearApiContext);
+  console.log("in App function-> ", accesToken);
+
   //je logue l'accessToken, quand le state change dans le context, les composants qui l'utilisent ils se re-render avec la nouvelle valeur
 
   return (
@@ -80,12 +85,20 @@ export default function App() {
               }
             />
             <Route
-              path="*"
+              path="/premium-page"
               element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
+                  <Protected type={'user'}>
+                      <PremiumPage />
+                  </Protected>
               }
+            />
+            <Route
+                path="*"
+                element={
+                  <main style={{ padding: "1rem" }}>
+                    <p>There's nothing here!</p>
+                  </main>
+                }
             />
           </Routes>
         </ReWearApiContextProvider>
