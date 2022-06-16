@@ -6,13 +6,21 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Stack } from "@mui/material";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Profil() {
   const [dresses, setDresses] = useState([]);
   const [selectedDress, setSelectedDress] = useState([]);
-  const { request, accessToken, updateToken, isAdmin, isPremium, dressCount, endPremiumDate, loggedUser }
-      = useContext(ReWearApiContext);
+  const {
+    request,
+    accessToken,
+    updateToken,
+    isAdmin,
+    isPremium,
+    dressCount,
+    endPremiumDate,
+    loggedUser,
+  } = useContext(ReWearApiContext);
 
   let navigate = useNavigate();
 
@@ -49,33 +57,26 @@ export default function Profil() {
     <>
       <h1>Profil de {loggedUser}</h1>
       <ul>
-        { isAdmin === true &&
-            <li>compte admin</li>
-        }
+        {isAdmin === true && <li>compte admin</li>}
 
-        { isPremium === true &&(
-            <li>Compte premium jusqu'au: {endPremiumDate}</li>
+        {isPremium === true && (
+          <li>Compte premium jusqu'au: {endPremiumDate}</li>
         )}
 
-        { isPremium !== true &&(
-            <li>{dressCount}/5 habits</li>
-        )}
+        {isPremium !== true && <li>{dressCount}/5 habits</li>}
 
-        { isPremium === true &&(
-            <li>Limite d'habits infinie</li>
-        )}
+        {isPremium === true && <li>Limite d'habits infinie</li>}
 
-          <Button
-              variant={"contained"}
-              color={"secondary"}
-              // disabled={isPremium === true}
-              onClick={() => {
-                  navigate("/premium-page");
-              }}
-          >
-              Voir les packs Premium
-          </Button>
-
+        <Button
+          variant={"contained"}
+          color={"secondary"}
+          // disabled={isPremium === true}
+          onClick={() => {
+            navigate("/premium-page");
+          }}
+        >
+          Voir les packs Premium
+        </Button>
       </ul>
 
       <h2>Dressing</h2>
@@ -92,6 +93,7 @@ export default function Profil() {
                   description={dress.description}
                   price={dress.price}
                   category={dress.category}
+                  previewMode={false}
                   imageUrl={
                     dress.imageUrl !== ""
                       ? dress.imageUrl
@@ -103,20 +105,19 @@ export default function Profil() {
             </Grid>
             <Grid item xs={8}>
               {selectedDress.length > 0 && (
-
                 <Grid container spacing={2}>
-                    <Grid item xs={6} md={12}>
-                        <Stack direction="row" spacing={2}>
-                            <Button
-                                onClick={deleteDress}
-                                id={JSON.parse(selectedDress).id}
-                                variant="contained"
-                                endIcon={<DeleteIcon />}
-                            >
-                                Supprimer
-                            </Button>
-                        </Stack>
-                    </Grid>
+                  <Grid item xs={6} md={12}>
+                    <Stack direction="row" spacing={2}>
+                      <Button
+                        onClick={deleteDress}
+                        id={JSON.parse(selectedDress).id}
+                        variant="contained"
+                        endIcon={<DeleteIcon />}
+                      >
+                        Supprimer
+                      </Button>
+                    </Stack>
+                  </Grid>
                   <Grid item xs={6} md={8}>
                     <h1>{JSON.parse(selectedDress).name}</h1>
                   </Grid>
@@ -160,13 +161,7 @@ export default function Profil() {
         </ul>
       )}
 
-      {dresses.length === 0 &&(
-          <p>Vous n'avez publié aucun habit</p>
-      )}
-
+      {dresses.length === 0 && <p>Vous n'avez publié aucun habit</p>}
     </>
-
   );
 }
-
-

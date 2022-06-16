@@ -91,19 +91,15 @@ export default function Accueil() {
         Pour mettre en vente un nombre infini d'habits, il est possible
         d'acheter des packs premium. Disponible sur le profil utilisateur
       </p>
-      <p>
-        <a href={"https://localhost:7175/swagger/index.html"}>Swagger</a>
-      </p>
-      <button
-        onClick={async () => {
-          console.log("isAdmin: " + isAdmin);
-          console.log("isPremium: " + isPremium);
-          console.log("isAuthenticated: " + isAuthenticated);
+      <h2>Users of the app:</h2>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "space-between",
+          justifyContent: "center",
+          gridGap: "1em",
         }}
       >
-        Test State
-      </button>
-      <div>
         {users.map((user) => {
           return (
             <Button
@@ -124,7 +120,7 @@ export default function Accueil() {
         })}
       </div>
       <div>
-        <h3>Dressing</h3>
+        {selectedUserDresses.length > 0 && <h3>Dressing</h3>}
         {selectedUserDresses.map((dress) => {
           return (
             <DressCard
@@ -134,6 +130,7 @@ export default function Accueil() {
               description={dress.description}
               price={dress.price}
               category={dress.category}
+              previewMode={true}
               imageUrl={
                 dress.imageUrl !== ""
                   ? dress.imageUrl

@@ -40,10 +40,10 @@ namespace ReWear_backend.Controllers
         }
 
         [HttpGet("all")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetUsers()
         {
-            var users = _userManager.Users.Select(u => new UserDto { UserName = u.UserName, IsPremium = u.EndPremiumDate > DateTime.Now, IsAdmin = u.IsAdmin}).ToList();
+            var users = _userManager.Users.Select(u => new   { UserName = u.UserName, IsPremium = u.EndPremiumDate > DateTime.Now, IsAdmin = u.IsAdmin}).ToList();
             return Ok(users);
         }
 
@@ -66,7 +66,7 @@ namespace ReWear_backend.Controllers
         }
 
         [HttpGet("{username}/dresses")]
-        [Authorize(AuthenticationSchemes = "Bearer")]
+        //[Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<IActionResult> GetDressesByUsername(string username)
         {
 
