@@ -10,7 +10,7 @@ import { ReWearApiContext } from "../../Services/ReWearApiContext";
 
 export default function Nav() {
   let navigate = useNavigate();
-  const { loggedUser, logOut} = useContext(ReWearApiContext);
+  const { loggedUser, logOut, isAdmin, isPremium} = useContext(ReWearApiContext);
 
 
   //render() {
@@ -21,17 +21,22 @@ export default function Nav() {
           ReWear.
         </div>
 
-        <div id={"search"}>
-          <img
-            id={"loupe"}
-            src={require("../../assets/iconLoupeBlanc1.png")}
-            alt="loupe"
-          />
-          Recherche
-        </div>
+        {/*<div id={"search"}>*/}
+        {/*  <img*/}
+        {/*    id={"loupe"}*/}
+        {/*    src={require("../../assets/iconLoupeBlanc1.png")}*/}
+        {/*    alt="loupe"*/}
+        {/*  />*/}
+        {/*  Recherche*/}
+        {/*</div>*/}
 
-        <div id={"sell"} onClick={() => navigate("/sell")}>Vendre</div>
+      {loggedUser !== null &&(
+          <>
+              <div id={"sell"} onClick={() => navigate("/sell")}>Vendre</div>
+          </>
+      )}
       </div>
+
 
       <div id={"nav_droite"}>
         <div id={"userName"}>
@@ -62,6 +67,7 @@ export default function Nav() {
           </div>
         }
 
+
         <div id={"login"}>
           <Button
               variant={"text"}
@@ -73,6 +79,22 @@ export default function Nav() {
             {loggedUser === null ? "login" : "logout"}
           </Button>
         </div>
+          {loggedUser !== null &&
+              <div id={"status"}>
+                  {isAdmin !== null &&
+                      <div>
+                          Compte Admin
+                      </div>
+                  }
+
+                  {isPremium !== null &&
+                      <div>
+                          Compte Premium
+                      </div>
+                  }
+
+              </div>
+          }
       </div>
     </div>
   );

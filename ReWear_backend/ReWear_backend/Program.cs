@@ -10,6 +10,8 @@ using ReWear_backend.Policies;
 using ReWear_backend.Services;
 using System.Text;
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -44,6 +46,17 @@ builder.Services.AddSwaggerGen(options =>
     options.AddSecurityRequirement(securityRequirement);
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.AllowAnyOrigin();
+                          policy.AllowAnyHeader();
+                          policy.AllowAnyMethod();
+                      });
+});
+
 //add Context that use Sqlite
 builder.Services.AddDbContext<ReWearDataContext>(options => options.UseSqlite(@"Data Source=ReWear.db;"));
 
@@ -75,7 +88,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy=> policy.RequireClaim("IsAdmin", "True")) ;
     options.AddPolicy("Max5DressesOrPremium", policy =>
-                policy.AddRequirements(new MaxDressOrPremiumRequirement(6)));
+                policy.AddRequirements(new MaxDressOrPremiumRequirement(5)));
     options.AddPolicy("PremiumOnly", policy =>
                 policy.AddRequirements(new IsPremiumRequirement()));
 });
@@ -118,6 +131,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors(MyAllowSpecificOrigins);
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
@@ -127,9 +142,10 @@ app.UseAuthorization();
 app.MapControllers();
 
 //To allow Cors
-app.UseCors(c =>  c
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                );
+//app.UseCors(c =>  c
+//                .AllowAnyOrigin()
+//                .AllowAnyMethod()
+//                .AllowAnyHeader()
+//                );
 
 app.Run();
