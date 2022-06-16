@@ -56,6 +56,9 @@ export default function PremiumPack(props) {
       });
     }
   }
+  function deletePack() {
+    props.onPackDelete(premiumPack.id);
+  }
   function addPack() {
     if (!priceValid) {
       window.alert("Price must be a float number");
@@ -128,13 +131,13 @@ export default function PremiumPack(props) {
         </Button>
       )}
       {!props.addMode && (
-        <Button variant="outlined" color="error">
+        <Button variant="outlined" color="error" onClick={deletePack}>
           Delete
         </Button>
       )}
       {props.addMode && (
         <Button variant="outlined" color="primary" onClick={addPack}>
-          New Pack
+          Add Pack
         </Button>
       )}
     </div>

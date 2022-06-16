@@ -64,7 +64,7 @@ namespace ReWear_backend.Controllers
             _reWearDataContext.PremiumPacks.Remove(premiumPack);
             await _reWearDataContext.SaveChangesAsync();
 
-            return Ok("Premium Pack succesfully deleted");
+            return Ok(premiumPack);
         }
 
         [HttpGet("buy/{premiumPackId}")]

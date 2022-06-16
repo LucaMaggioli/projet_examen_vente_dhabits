@@ -34,9 +34,27 @@ export default function AdminPage() {
       { name: pack.name, price: pack.price, validityDays: pack.validityDays },
       accessToken
     ).then((addedPack) => {
+      window.alert("Succesfully modified premium pack");
       console.log(addedPack);
     });
   }
+
+  function deletePack(packId) {
+    request("/PremiumPack/" + packId, "DELETE", null, accessToken).then(
+      (deletedPack) => {
+        console.log(deletedPack);
+        premiumPacks.map((pack) => {
+          if (pack.id === packId) {
+            window.alert("Succesfully removed premium pack");
+            let newPackList = [...premiumPacks];
+            newPackList.splice(premiumPacks.indexOf(pack), 1);
+            setPremiumPacks(newPackList);
+          }
+        });
+      }
+    );
+  }
+
   function addPack(pack) {
     console.log(pack);
     request(
@@ -45,7 +63,7 @@ export default function AdminPage() {
       { name: pack.name, price: pack.price, validityDays: pack.validityDays },
       accessToken
     ).then((addedPack) => {
-      console.log(addedPack);
+      window.alert("Succesfully added premium pack");
       setPremiumPacks([...premiumPacks, addedPack]);
       console.log(premiumPacks);
     });
@@ -68,6 +86,7 @@ export default function AdminPage() {
               key={element.id}
               pack={element}
               onPackModify={modifyPack}
+              onPackDelete={deletePack}
             ></PremiumPack>
           );
         })}
@@ -78,9 +97,6 @@ export default function AdminPage() {
           addMode={true}
           onAddPack={addPack}
         ></PremiumPack>
-        <Button variant="outlined" color="success">
-          New Pack
-        </Button>
       </div>
     </div>
   );
