@@ -6,8 +6,7 @@ export default function Login(props) {
   const [password, setPassword] = useState("Sp4ceDOG.2019");
 
   //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-  const { accessToken, logIn, request} =
-    useContext(ReWearApiContext);
+  const { accessToken, logIn, request } = useContext(ReWearApiContext);
   return (
     <>
       <h1>Hello, {props.name}</h1>
@@ -19,8 +18,8 @@ export default function Login(props) {
       <p>token: {accessToken}</p>
       <h3> Notes: </h3>
       <p>
-        The token is a state of the Login component(const [accessToken, setAccessToken] =
-        useState("")),
+        The token is a state of the Login component(const [accessToken,
+        setAccessToken] = useState("")),
       </p>
       <p>
         {" "}
@@ -38,25 +37,12 @@ export default function Login(props) {
   }
 
   async function login() {
+    //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
+    let response = await request("/auth/Login", "POST", {
+      email: email,
+      password: password,
+    });
 
-      //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
-      let response = await request('/auth/Login', 'POST', {email: email, password: password})
-
-      logIn(response.token);
-
-      console.log(response)
-      /*response.then(data=> {
-          console.log(data);
-      });*/
-
-      // if(response){
-      //     logIn(response.data.token, response.data.userName);
-      // } else if (response.statusText === 'Unauthorized'){
-      //     logOut();
-      // }
-      //
-      // console.log(response);
-      // console.log(response.data);
-
+    logIn(response.token);
   }
 }
