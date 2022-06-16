@@ -1,6 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useContext, useState, useEffect } from "react";
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
+import DressCard from "../DressCard/DressCard";
 
 export default function Accueil() {
   const [users, setUsers] = useState([]);
@@ -123,7 +124,23 @@ export default function Accueil() {
         })}
       </div>
       <div>
+        <h3>Dressing</h3>
         {selectedUserDresses.map((dress) => {
+          return (
+            <DressCard
+              dress={dress}
+              id={dress.id}
+              name={dress.name}
+              description={dress.description}
+              price={dress.price}
+              category={dress.category}
+              imageUrl={
+                dress.imageUrl !== ""
+                  ? dress.imageUrl
+                  : "https://decizia.com/blog/wp-content/uploads/2017/06/default-placeholder.png"
+              }
+            ></DressCard>
+          );
           return (
             <div>
               <span>{dress.name} </span>
