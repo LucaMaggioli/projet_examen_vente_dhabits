@@ -19,6 +19,7 @@ const ReWearApiContextProvider = ({ children }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [profils, setProfils] = useState([]);
 
   const cookies_token = new Cookies();
   const baseUrl = "https://localhost:7175";
@@ -67,17 +68,18 @@ const ReWearApiContextProvider = ({ children }) => {
     setDressCount(0);
     setEndPremiumDate(null);
 
+    setProfils([])
+
     cookies_token.remove('jwt', { path: '/' });
 
     navigate("/");
   }
 
-
-  function logIn(token){
+  async function logIn(token) {
     const user = JwtDecode(token);
     console.log(user);
 
-    cookies_token.set("jwt", token, { path: '/'})
+    cookies_token.set("jwt", token, {path: '/'})
 
     setAccessToken(token);
     setLoggedUser(user.Username.toString());
@@ -88,12 +90,14 @@ const ReWearApiContextProvider = ({ children }) => {
     setDressCount(user.dressesCount);
     setEndPremiumDate(user.endPremiumDate);
 
+    setProfils(await request("/User/all", "GET", null, token));
+
     navigate("/");
   }
-  function updateToken(token) {
+  async function updateToken(token) {
     const user = JwtDecode(token);
 
-    cookies_token.set("jwt", token, { path: "/" });
+    cookies_token.set("jwt", token, {path: "/"});
     setAccessToken(token);
     setAccessCookie(cookies_token.get("jwt"));
     setIsAdmin(user.IsAdmin.toString() === "True");
@@ -101,6 +105,8 @@ const ReWearApiContextProvider = ({ children }) => {
     setIsAuthenticated(true);
     setDressCount(user.dressesCount);
     setEndPremiumDate(user.endPremiumDate);
+
+    setProfils(await request("/User/all", "GET", null, token));
   }
 
   async function request(endpointUrl, method, body, token) {

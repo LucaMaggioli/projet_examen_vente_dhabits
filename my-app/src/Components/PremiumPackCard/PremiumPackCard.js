@@ -42,10 +42,9 @@ export default function PremiumPackCard(props) {
                             <Button
                                 variant="outlined"
                                 href=""
-                                disabled={props.isPremium === true}
                                 onClick={onTrigger}>
 
-                                {props.isPremium !== true ? "Acheter" : "Déjà Premium"}
+                                Acheter
                             </Button>
                         </Grid>
                     </Grid>

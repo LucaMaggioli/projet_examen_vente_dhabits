@@ -42,7 +42,7 @@ const theme = createTheme({
 
 export default function App() {
   //cette ligne pour acceder à un state que je trouve dans ReWearContext
-  const { accesToken} =
+  const { accesToken } =
       useContext(ReWearApiContext);
   console.log("in App function-> ", accesToken);
   //je logue l'accessToken, quand le state change dans le context, les composants qui l'utilisent ils se re-render avec la nouvelle valeur
