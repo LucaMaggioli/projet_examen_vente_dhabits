@@ -15,6 +15,7 @@ import {SignUp} from "./Components/SignUp/SignUp";
 import Sell from "./Components/Sell/Sell";
 import Profil from "./Components/Profil/Profil";
 import Protected from "./Services/Protected";
+import PremiumPage from "./Components/PremiumPage/PremiumPage";
 
 const theme = createTheme({
   palette: {
@@ -73,12 +74,20 @@ export default function App() {
                 }
             />
             <Route
-              path="*"
+              path="/premium-page"
               element={
-                <main style={{ padding: "1rem" }}>
-                  <p>There's nothing here!</p>
-                </main>
+                  <Protected type={'user'}>
+                      <PremiumPage />
+                  </Protected>
               }
+            />
+            <Route
+                path="*"
+                element={
+                  <main style={{ padding: "1rem" }}>
+                    <p>There's nothing here!</p>
+                  </main>
+                }
             />
           </Routes>
         </ReWearApiContextProvider>

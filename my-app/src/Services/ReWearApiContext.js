@@ -14,6 +14,8 @@ const ReWearApiContextProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [loggedUser, setLoggedUser] = useState(null);
   const [accessCookie, setAccessCookie] = useState(null);
+  const [dressCount, setDressCount] = useState(0);
+  const [endPremiumDate, setEndPremiumDate] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [isPremium, setIsPremium] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -59,10 +61,11 @@ const ReWearApiContextProvider = ({ children }) => {
     setAccessToken(null);
     setLoggedUser(null);
     setAccessCookie(null);
-
     setIsAdmin(false);
     setIsPremium(false);
     setIsAuthenticated(false);
+    setDressCount(0);
+    setEndPremiumDate(null);
 
     cookies_token.remove('jwt', { path: '/' });
 
@@ -80,15 +83,24 @@ const ReWearApiContextProvider = ({ children }) => {
     setLoggedUser(user.Username.toString());
     setAccessCookie(cookies_token.get("jwt"));
     setIsAdmin(user.IsAdmin.toString() === "True");
-    setIsPremium(formatDate(new Date(user.endPremiumDate)) > formatDate(new Date()))
+    setIsPremium(formatDate(new Date(user.endPremiumDate)) > formatDate(new Date()));
     setIsAuthenticated(true);
+    setDressCount(user.dressesCount);
+    setEndPremiumDate(user.endPremiumDate);
 
     navigate("/");
   }
   function updateToken(token) {
-    setAccessToken(token);
+    const user = JwtDecode(token);
+
     cookies_token.set("jwt", token, { path: "/" });
+    setAccessToken(token);
     setAccessCookie(cookies_token.get("jwt"));
+    setIsAdmin(user.IsAdmin.toString() === "True");
+    setIsPremium(formatDate(new Date(user.endPremiumDate)) > formatDate(new Date()))
+    setIsAuthenticated(true);
+    setDressCount(user.dressesCount);
+    setEndPremiumDate(user.endPremiumDate);
   }
 
   async function request(endpointUrl, method, body, token) {
@@ -122,6 +134,7 @@ const ReWearApiContextProvider = ({ children }) => {
         });
       } else if (response.status === 401) {
         console.log("unathorized in request");
+        navigate('/login');
         return Promise.reject({
           message: "Please log in to access the api",
           status: response.status,
@@ -147,7 +160,10 @@ const ReWearApiContextProvider = ({ children }) => {
         updateToken,
         isAdmin,
         isPremium,
-        isAuthenticated
+        isAuthenticated,
+        dressCount,
+        endPremiumDate,
+
       }}
 
     >
