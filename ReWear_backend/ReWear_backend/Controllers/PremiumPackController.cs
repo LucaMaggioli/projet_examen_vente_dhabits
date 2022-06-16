@@ -40,9 +40,18 @@ namespace ReWear_backend.Controllers
 
         [HttpPatch("{premiumPackId}")]
         [Authorize(AuthenticationSchemes = "Bearer", Policy = "AdminOnly")]
-        public async Task<IActionResult> UpdatePremiumPack(Guid premiumPackId) //[FromBody] PremiumPackDto PremiumPackToAddDto
+        public async Task<IActionResult> UpdatePremiumPack(Guid premiumPackId, [FromBody] PremiumPackDto PremiumPackToAddDto) //[FromBody] PremiumPackDto PremiumPackToAddDto
         {
-            return Ok("Still not implemented");
+            var pack = _reWearDataContext.PremiumPacks.FindAsync(premiumPackId).Result;
+            if (pack == null) { return NotFound("Pack not found with given Id"); }
+
+            pack.Name = PremiumPackToAddDto.Name;
+            pack.Price= PremiumPackToAddDto.Price;
+            pack.ValidityDays = PremiumPackToAddDto.ValidityDays;
+
+            await _reWearDataContext.SaveChangesAsync();
+
+            return Ok(pack);
         }
 
         [HttpDelete("{premiumPackId}")]
@@ -55,7 +64,7 @@ namespace ReWear_backend.Controllers
             _reWearDataContext.PremiumPacks.Remove(premiumPack);
             await _reWearDataContext.SaveChangesAsync();
 
-            return Ok("Premium Pack succesfully deleted");
+            return Ok(premiumPack);
         }
 
         [HttpGet("buy/{premiumPackId}")]

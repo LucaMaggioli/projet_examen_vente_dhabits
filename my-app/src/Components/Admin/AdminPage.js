@@ -1,201 +1,170 @@
-import React, { useContext, useState } from "react";
-import { MenuItem, Select, TextField } from "@mui/material";
+import React, { useContext, useState, useEffect } from "react";
 import { ReWearApiContext } from "../../Services/ReWearApiContext";
-import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
+import PremiumPack from "../PremiumPack/PremiumPack";
 
 export default function AdminPage() {
-  const [sizeIsVisible, setSizeIsVisible] = useState(false);
-  const [standardSizeIsVisible, setStandardSizeIsVisible] = useState(false);
-  const [sizeTypeList, setSizeTypeList] = useState([]);
+  const [premiumPacks, setPremiumPacks] = useState([]);
+  const [users, setUsers] = useState([]);
+  const { accessToken, request, updateToken, loggedUser } =
+    useContext(ReWearApiContext);
 
-  const [formValue, setFormValue] = useState({
-    name: "",
-    imageUrl: "",
-    price: "",
-    description: "",
-    healthState: "",
-    category: "",
-    size: "",
-  });
-  const { accessToken, request } = useContext(ReWearApiContext);
+  useEffect(() => {
+    // async function callData() {
+    getPremiumPacks();
+    getUsers();
+    // }
+    // callData();
+  }, []);
+  console.log("users at render");
+  console.log(users);
 
-  let navigate = useNavigate();
-
-  const { name, imageUrl, price, description, healthState, category, size } =
-    formValue;
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    formValue.price = parseFloat(formValue.price);
-    console.log(formValue);
-
-    let response = await request(
-      "/User/me/dress",
-      "POST",
-      formValue,
-      accessToken
-    );
-    console.log(response);
-
-    navigate("/profil");
-  };
-
-  const handleChange = async (event) => {
-    const { name, value } = event.target;
-
-    setFormValue((prevState) => {
-      return {
-        ...prevState,
-        [name]: value,
-      };
+  function getUsers() {
+    request("/User/all", "GET", null, accessToken).then((getUsers) => {
+      setUsers(getUsers);
     });
-  };
+  }
 
-  const categoryChange = async (event) => {
-    const { value } = event.target;
-    let sizeTypeList = [];
-
-    if (value != null) {
-      setSizeIsVisible(true);
-    }
-
-    if (value === "T-Shirt" || value === "Pull" || value === "Veste") {
-      standardSize.forEach((data) => {
-        sizeTypeList.push(
-          <MenuItem key={data} value={data}>
-            {data}
-          </MenuItem>
-        );
+  function getPremiumPacks() {
+    request("/PremiumPack/all", "GET", null, accessToken)
+      .then((premiumPacks) => {
+        setPremiumPacks(premiumPacks);
+      })
+      .catch((error) => {
+        console.log(error);
       });
-      setSizeTypeList(sizeTypeList);
+  }
+  function modifyPack(pack) {
+    request(
+      "/PremiumPack/" + pack.id,
+      "PATCH",
+      { name: pack.name, price: pack.price, validityDays: pack.validityDays },
+      accessToken
+    ).then((addedPack) => {
+      window.alert("Succesfully modified premium pack");
+    });
+  }
 
-      setStandardSizeIsVisible(true);
+  function deletePack(packId) {
+    request("/PremiumPack/" + packId, "DELETE", null, accessToken).then(
+      (deletedPack) => {
+        premiumPacks.map((pack) => {
+          if (pack.id === packId) {
+            window.alert("Succesfully removed premium pack");
+            let newPackList = [...premiumPacks];
+            newPackList.splice(premiumPacks.indexOf(pack), 1);
+            setPremiumPacks(newPackList);
+          }
+        });
+      }
+    );
+  }
+
+  function addPack(pack) {
+    request(
+      "/PremiumPack/add",
+      "POST",
+      { name: pack.name, price: pack.price, validityDays: pack.validityDays },
+      accessToken
+    ).then((addedPack) => {
+      window.alert("Succesfully added premium pack");
+      setPremiumPacks([...premiumPacks, addedPack]);
+    });
+  }
+
+  function adminChange(user) {
+    if (user.userName === loggedUser) {
+      alert("you cant modify your own admin status!");
     } else {
-      setStandardSizeIsVisible(false);
-      setSizeTypeList(sizeTypeList);
+      request(
+        "/User/" + user.userName + "/upgradeToAdmin",
+        "PATCH",
+        !user.isAdmin,
+        accessToken
+      ).then((updatedUser) => {
+        window.alert(
+          "Succesfully Admin status modified " +
+            updatedUser.isAdmin +
+            " for user: " +
+            updatedUser.userName
+        );
+        let prevUsers = [...users];
+        let index = -1;
+        prevUsers.map((u) => {
+          if (u.userName === updatedUser.userName) {
+            index = prevUsers.indexOf(u);
+          }
+        });
+        prevUsers.splice(index, 1, updatedUser);
+        setUsers(prevUsers);
+      });
     }
-  };
-
-  let standardSize = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
+  }
 
   return (
-    <>
-      <h3>En développement</h3>
-
-      <form onSubmit={handleSubmit}>
-        <h3>Titre</h3>
-        <TextField
-          required
-          id="outlined-basic"
-          label="Titre"
-          variant="filled"
-          name="name"
-          value={name}
-          onChange={handleChange}
-        />
-
-        <h3>Image (URL)</h3>
-        <TextField
-          id="outlined-basic"
-          label="Image (URL)"
-          variant="filled"
-          name="imageUrl"
-          value={imageUrl}
-          onChange={handleChange}
-        />
-
-        <h3>Prix</h3>
-        <TextField
-          required
-          inputProps={{ inputMode: "numeric", pattern: "[0-9]*", maxLength: 5 }}
-          label="Prix"
-          variant="filled"
-          name="price"
-          value={price}
-          onChange={handleChange}
-        />
-
-        <h3>Description</h3>
-        <TextField
-          label="Description"
-          multiline
-          rows={4}
-          variant="filled"
-          name="description"
-          value={description}
-          onChange={handleChange}
-        />
-
-        <h3>État de l'habit</h3>
-        <Select
-          required
-          label="État de l'habit"
-          name="healthState"
-          value={healthState}
-          onChange={handleChange}
-        >
-          <MenuItem value={"Usé"}>Usé</MenuItem>
-          <MenuItem value={"Bon"}>Bon</MenuItem>
-          <MenuItem value={"Comme neuf"}>Comme neuf</MenuItem>
-        </Select>
-
-        <h3>Catégorie d'habit</h3>
-        <Select
-          required
-          label="Catégorie d'habit"
-          name="category"
-          value={category}
-          onChange={async (event) => {
-            await handleChange(event);
-            await categoryChange(event);
-          }}
-        >
-          <MenuItem value={"T-Shirt"}>T-Shirt</MenuItem>
-          <MenuItem value={"Pull"}>Pull</MenuItem>
-          <MenuItem value={"Veste"}>Veste</MenuItem>
-          <MenuItem value={"Pantalon"}>Pantalon</MenuItem>
-          <MenuItem value={"Short"}>Short</MenuItem>
-          <MenuItem value={"Chaussures"}>Chaussures</MenuItem>
-        </Select>
-
-        {sizeIsVisible === true && (
-          <>
-            <h3>Taille</h3>
-            {standardSizeIsVisible !== true && (
-              <TextField
-                required
-                inputProps={{
-                  inputMode: "numeric",
-                  pattern: "[0-9]*",
-                  maxLength: 5,
-                }}
-                label="Taille"
-                name="size"
-                value={size}
-                onChange={handleChange}
-              />
-            )}
-
-            {standardSizeIsVisible === true && (
-              <Select
-                required
-                label="Taille"
-                name="size"
-                value={size}
-                onChange={handleChange}
-              >
-                {sizeTypeList}
-              </Select>
-            )}
-
-            <br />
-            <Button variant="contained" color="primary" type="submit">
-              Submit
-            </Button>
-          </>
-        )}
-      </form>
-    </>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gridGap: "2em",
+      }}
+    >
+      <h2>Admin Page</h2>
+      <div style={{ display: "flex", flexDirection: "row", gridGap: "1em" }}>
+        {users.map((user) => {
+          return (
+            <div
+              key={user.userName}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gridGap: "4px",
+                alignItems: "center",
+              }}
+            >
+              {user.userName}
+              {user.isAdmin && (
+                <Button
+                  color="error"
+                  variant="contained"
+                  onClick={() => adminChange(user)}
+                >
+                  un-admin
+                </Button>
+              )}
+              {!user.isAdmin && (
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => adminChange(user)}
+                >
+                  up-admin
+                </Button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <div>
+        {premiumPacks.map((element) => {
+          return (
+            <PremiumPack
+              key={element.id}
+              pack={element}
+              onPackModify={modifyPack}
+              onPackDelete={deletePack}
+            ></PremiumPack>
+          );
+        })}
+      </div>
+      <div>
+        <PremiumPack
+          pack={{ id: "", name: "", price: "", validityDays: "" }}
+          addMode={true}
+          onAddPack={addPack}
+        ></PremiumPack>
+      </div>
+    </div>
   );
 }

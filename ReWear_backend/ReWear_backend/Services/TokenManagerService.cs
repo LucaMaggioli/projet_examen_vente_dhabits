@@ -42,7 +42,7 @@ namespace ReWear_backend.Services
                 }),
 
                 //Expires = DateTime.UtcNow.AddHours(6),
-                Expires = DateTime.UtcNow.AddMinutes(3),
+                Expires = DateTime.UtcNow.AddMinutes(30),
                 // ici, nous ajoutons l'information sur l'algorithme de cryptage qui sera utilisé pour décrypter notre token.
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };

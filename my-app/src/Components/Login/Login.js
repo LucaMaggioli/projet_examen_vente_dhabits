@@ -6,10 +6,10 @@ export default function Login(props) {
   const [password, setPassword] = useState("Sp4ceDOG.2019");
   const [responseMessage, setResponseMessage] = useState();
 
-
     //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-  const { logIn, request} =
+  const { accessToken, logIn, request } =
     useContext(ReWearApiContext);
+  
   return (
     <>
       <h1>Hello {props.name}</h1>
@@ -18,20 +18,11 @@ export default function Login(props) {
       <label>Password</label>
       <input id="password" value={password} onChange={changePassword} />
       <button onClick={login}>LogIn</button>
+
         <p>
             {responseMessage}
         </p>
-      {/*<p>token: {accessToken}</p>*/}
-      {/*<h3> Notes: </h3>*/}
-      {/*<p>*/}
-      {/*  The token is a state of the Login component(const [accessToken, setAccessToken] =*/}
-      {/*  useState("")),*/}
-      {/*</p>*/}
-      {/*<p>*/}
-      {/*  {" "}*/}
-      {/*  but we can access the state of ReWearApiContext -> const -accessToken,*/}
-      {/*  setAccessToken- = useContext(ReWearApiContext)*/}
-      {/*</p>*/}
+     
     </>
   );
 
@@ -43,29 +34,19 @@ export default function Login(props) {
   }
 
   async function login() {
+    //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
+    let response = await request("/auth/Login", "POST", {
+      email: email,
+      password: password,
+    });
+
 
       //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
       let response = await request('/auth/Login', 'POST', {email: email, password: password})
       console.log(response);
-      console.log(response.data);
-      console.log(response.token);
-      console.log(response.message);
       setResponseMessage(response.message);
 
       logIn(response.token);
-
-      /*response.then(data=> {
-          console.log(data);
-      });*/
-
-      // if(response){
-      //     logIn(response.data.token, response.data.userName);
-      // } else if (response.statusText === 'Unauthorized'){
-      //     logOut();
-      // }
-      //
-      // console.log(response);
-      // console.log(response.data);
 
   }
 }

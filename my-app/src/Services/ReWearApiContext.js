@@ -26,34 +26,32 @@ const ReWearApiContextProvider = ({ children }) => {
 
   let navigate = useNavigate();
 
-  useEffect(async () => {
-
-    const authToken = cookies_token.get('jwt', '/') ? cookies_token.get('jwt', '/') : null;
-    if(authToken){
-
+  useEffect(() => {
+    const authToken = cookies_token.get("jwt", "/")
+      ? cookies_token.get("jwt", "/")
+      : null;
+    if (authToken) {
       logIn(authToken);
-
     }
-
   }, []);
 
   function padTo2Digits(num) {
-    return num.toString().padStart(2, '0');
+    return num.toString().padStart(2, "0");
   }
 
   function formatDate(date) {
     return (
-        [
-          padTo2Digits(date.getMonth() + 1),
-          padTo2Digits(date.getDate()),
-          date.getFullYear(),
-        ].join('/') +
-        ' ' +
-        [
-          padTo2Digits(date.getHours()),
-          padTo2Digits(date.getMinutes()),
-          padTo2Digits(date.getSeconds()),
-        ].join(':')
+      [
+        padTo2Digits(date.getMonth() + 1),
+        padTo2Digits(date.getDate()),
+        date.getFullYear(),
+      ].join("/") +
+      " " +
+      [
+        padTo2Digits(date.getHours()),
+        padTo2Digits(date.getMinutes()),
+        padTo2Digits(date.getSeconds()),
+      ].join(":")
     );
   }
 
@@ -70,22 +68,26 @@ const ReWearApiContextProvider = ({ children }) => {
 
     setProfils([])
 
-    cookies_token.remove('jwt', { path: '/' });
+    cookies_token.remove("jwt", { path: "/" });
 
     navigate("/");
   }
 
-  async function logIn(token) {
+  function logIn(token) {
     const user = JwtDecode(token);
     console.log(user);
 
-    cookies_token.set("jwt", token, {path: '/'})
+    cookies_token.set("jwt", token, { path: "/" });
 
     setAccessToken(token);
     setLoggedUser(user.Username.toString());
     setAccessCookie(cookies_token.get("jwt"));
     setIsAdmin(user.IsAdmin.toString() === "True");
-    setIsPremium(formatDate(new Date(user.endPremiumDate)) > formatDate(new Date()));
+
+    setIsPremium(
+      formatDate(new Date(user.endPremiumDate)) > formatDate(new Date())
+    );
+
     setIsAuthenticated(true);
     setDressCount(user.dressesCount);
     setEndPremiumDate(user.endPremiumDate);
@@ -169,9 +171,7 @@ const ReWearApiContextProvider = ({ children }) => {
         isAuthenticated,
         dressCount,
         endPremiumDate,
-
       }}
-
     >
       {children}
     </ReWearApiContext.Provider>

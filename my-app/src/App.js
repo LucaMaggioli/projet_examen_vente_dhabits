@@ -11,11 +11,13 @@ import {
   ReWearApiContext,
   ReWearApiContextProvider,
 } from "./Services/ReWearApiContext";
-import {SignUp} from "./Components/SignUp/SignUp";
+import { SignUp } from "./Components/SignUp/SignUp";
 import Sell from "./Components/Sell/Sell";
 import Profil from "./Components/Profil/Profil";
 import Protected from "./Services/Protected";
 import PremiumPage from "./Components/PremiumPage/PremiumPage";
+import AdminPage from "./Components/Admin/AdminPage";
+
 
 const theme = createTheme({
   palette: {
@@ -42,11 +44,12 @@ const theme = createTheme({
 
 export default function App() {
   //cette ligne pour acceder à un state que je trouve dans ReWearContext
+
   const { accesToken } =
       useContext(ReWearApiContext);
   console.log("in App function-> ", accesToken);
-  //je logue l'accessToken, quand le state change dans le context, les composants qui l'utilisent ils se re-render avec la nouvelle valeur
 
+  //je logue l'accessToken, quand le state change dans le context, les composants qui l'utilisent ils se re-render avec la nouvelle valeur
 
   return (
     <ThemeProvider theme={theme}>
@@ -58,20 +61,28 @@ export default function App() {
             <Route exact path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route
-                path="/sell"
-                element={
-                  <Protected type={'user'}>
-                    <Sell />
-                  </Protected>
-                }
+              path="/admin"
+              element={
+                <Protected type={"admin"}>
+                  <AdminPage />
+                </Protected>
+              }
+            ></Route>
+            <Route
+              path="/sell"
+              element={
+                <Protected type={"user"}>
+                  <Sell />
+                </Protected>
+              }
             />
             <Route
-                path="/profil"
-                element={
-                  <Protected type={'user'}>
-                    <Profil />
-                  </Protected>
-                }
+              path="/profil"
+              element={
+                <Protected type={"user"}>
+                  <Profil />
+                </Protected>
+              }
             />
             <Route
               path="/premium-page"
