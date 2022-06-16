@@ -120,7 +120,11 @@ export default function Accueil() {
         })}
       </div>
       <div>
-        {selectedUserDresses.length > 0 && <h3>Dressing</h3>}
+        <h3>Dressing</h3>
+        {selectedUserDresses.length < 1 && (
+          <p>L'User n'a pas d'habits en vente</p>
+        )}
+
         {selectedUserDresses.map((dress) => {
           return (
             <DressCard
@@ -137,13 +141,6 @@ export default function Accueil() {
                   : "https://decizia.com/blog/wp-content/uploads/2017/06/default-placeholder.png"
               }
             ></DressCard>
-          );
-          return (
-            <div>
-              <span>{dress.name} </span>
-              <span>{dress.description} </span>
-              <span>{dress.price}</span>;
-            </div>
           );
         })}
       </div>
