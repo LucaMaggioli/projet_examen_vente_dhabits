@@ -6,6 +6,7 @@ import PremiumPackCard from "../PremiumPackCard/PremiumPackCard";
 
 export default function PremiumPage() {
     const [premiumPacks, setPremiumPacks] = useState([]);
+    const [premiumDetails, setPremiumDetails] = useState([]);
     const { request, accessToken, updateToken, isPremium, endPremiumDate, loggedUser }
         = useContext(ReWearApiContext);
 
@@ -14,9 +15,13 @@ export default function PremiumPage() {
     }, []);
 
     async function reloadPremiumPack() {
-        let response = await request("/PremiumPack/all", "GET", null, accessToken);
-        setPremiumPacks(response);
-        console.log(response);
+        let responsePremiumPack = await request("/PremiumPack/all", "GET", null, accessToken);
+        let responsePremiumDetails  = await request("/User/me/premiumDetails", "GET", null, accessToken);
+
+        setPremiumPacks(responsePremiumPack);
+        setPremiumDetails(responsePremiumDetails.boughtPacks);
+        console.log(responsePremiumPack);
+        console.log(responsePremiumDetails.boughtPacks);
     }
 
     const handleCallback = async (childData) => {
@@ -40,6 +45,12 @@ export default function PremiumPage() {
                 )}
             </ul>
 
+            <h2>Historique d'achat</h2>
+            <ul>
+                {premiumDetails.map((premiumDetail) => (
+                    <li>{premiumDetail.premiumPack.name} | {premiumDetail.boughtDate}</li>
+                ))}
+            </ul>
             <h2>Achat de pack premium</h2>
             {premiumPacks.map((pack) => (
                 <PremiumPackCard
