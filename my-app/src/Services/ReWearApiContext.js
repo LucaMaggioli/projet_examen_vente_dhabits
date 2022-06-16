@@ -73,11 +73,11 @@ const ReWearApiContextProvider = ({ children }) => {
     navigate("/");
   }
 
-  function logIn(token) {
+  async function logIn(token) {
     const user = JwtDecode(token);
     console.log(user);
 
-    cookies_token.set("jwt", token, { path: "/" });
+    cookies_token.set("jwt", token, {path: "/"});
 
     setAccessToken(token);
     setLoggedUser(user.Username.toString());
@@ -85,7 +85,7 @@ const ReWearApiContextProvider = ({ children }) => {
     setIsAdmin(user.IsAdmin.toString() === "True");
 
     setIsPremium(
-      formatDate(new Date(user.endPremiumDate)) > formatDate(new Date())
+        formatDate(new Date(user.endPremiumDate)) > formatDate(new Date())
     );
 
     setIsAuthenticated(true);
@@ -171,6 +171,7 @@ const ReWearApiContextProvider = ({ children }) => {
         isAuthenticated,
         dressCount,
         endPremiumDate,
+        profils
       }}
     >
       {children}

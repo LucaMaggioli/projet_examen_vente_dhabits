@@ -7,7 +7,7 @@ export default function Login(props) {
   const [responseMessage, setResponseMessage] = useState();
 
     //grace à cette ligne je vais pouvoir utiliser les 'states' de mon contexte 'ReWearApiContext'
-  const { accessToken, logIn, request } =
+  const { logIn, request } =
     useContext(ReWearApiContext);
   
   return (
@@ -35,11 +35,6 @@ export default function Login(props) {
 
   async function login() {
     //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
-    let response = await request("/auth/Login", "POST", {
-      email: email,
-      password: password,
-    });
-
 
       //const response = await API.post('https://localhost:7175/auth/Login', {email: email, password: password});
       let response = await request('/auth/Login', 'POST', {email: email, password: password})

@@ -76,17 +76,17 @@ export default function Nav() {
         </div>
           {loggedUser !== null &&
               <div id={"status"}>
-                  {isAdmin !== null &&
+                  {isAdmin && (
                       <div>
                           Compte Admin
                       </div>
-                  }
+                  )}
 
-                  {isPremium !== null &&
+                  {isPremium && (
                       <div>
                           Compte Premium
                       </div>
-                  }
+                  )}
 
               </div>
           }
