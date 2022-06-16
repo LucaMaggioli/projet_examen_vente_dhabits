@@ -19,6 +19,18 @@ Premium:
     - Gratuit: accès aux habits, vente de 5 produits max
     - Payant: achat pour un nombre infini d'habits
 
+Fonctionnalité de l'app:
+    - Login/Register
+    - Visionner les habits sur les profils des autres
+    - Visionner les habits sur notre propre profil/ainsi que les supprimer
+    - Achat de pack Premium (avec un historique d'achat)
+    - Formulaire de vente des habits
+    - Gestion de la limite du compte gratuit (pas plus de 5 habits)
+    - Gestion des fonctions premium (habits infinis)
+    - Onglet Admin, avec gestion de pack premium, gestion utilisateur
+    - Protection des routes
+    - Gestion de token
+
 POUR LANCER L'APPLICATION:
 - Pour lancer l'application React:
   - aller dans le repertoire 'projet_examen_vente_dhabits/my-app'
@@ -40,4 +52,3 @@ POUR LANCER L'APPLICATION:
     - Les Users Premium peuvent avoir plus que 5 `dresses`
     - Les Users Admin peuvent gérér les premiumpacks et faire devenir d'autres Users Admin
     - enjoy 😉
-s
